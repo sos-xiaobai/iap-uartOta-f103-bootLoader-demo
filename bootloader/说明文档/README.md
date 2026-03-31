@@ -39,7 +39,7 @@ bootloader_IAP/
 
 ### 1. 硬件要求
 
-- **MCU**: STM32F103ZE (512KB Flash, 64KB RAM)
+- **MCU**: STM32F103C8 (64KB Flash, 64KB RAM)
 - **通信接口**: UART（可扩展USB、CAN等）
 - **其他**: 按键、LED等（可选）
 
@@ -54,9 +54,9 @@ bootloader_IAP/
 
 | 区域 | 起始地址 | 大小 | 说明 |
 |------|----------|------|------|
-| **Bootloader** | 0x08000000 | 64KB | Bootloader程序 |
-| **Application** | 0x08010000 | 448KB | 应用程序 |
-| **Update Flag** | 0x0807F800 | 2KB | 升级标志 |
+| **Bootloader** | 0x08000000 | 16KB | Bootloader程序 |
+| **Application** | 0x08004000 | 47KB | 应用程序 |
+| **Update Flag** | 0x0800FC00 | 1KB | 升级标志 |
 
 ### 4. 编译配置
 
@@ -65,15 +65,15 @@ bootloader_IAP/
 修改链接脚本（`bootloader.sct`）:
 
 ```
-LR_IROM1 0x08000000 0x00010000  ; 64KB
+LR_IROM1 0x08000000 0x00004000  ; 16KB
 {
-    ER_IROM1 0x08000000 0x00010000
+    ER_IROM1 0x08000000 0x00004000
     {
         *.o (RESET, +First)
         *(InRoot$$Sections)
         .ANY (+RO)
     }
-    RW_IRAM1 0x20000000 0x00010000
+    RW_IRAM1 0x20000000 0x00004000
     {
         .ANY (+RW +ZI)
     }
@@ -93,7 +93,7 @@ LR_IROM1 0x08010000 0x00070000  ; 448KB
         *(InRoot$$Sections)
         .ANY (+RO)
     }
-    RW_IRAM1 0x20000000 0x00010000
+    RW_IRAM1 0x20000000 0x00004000
     {
         .ANY (+RW +ZI)
     }
@@ -220,9 +220,9 @@ uint8_t Bootloader_CheckUpdateFlag(void);                         // 检查升�
 ```c
 // Flash地址配置
 #define BOOTLOADER_START_ADDR   0x08000000
-#define BOOTLOADER_SIZE         0x00010000  // 64KB
-#define APP_START_ADDR          0x08010000
-#define APP_MAX_SIZE            0x00070000  // 448KB
+#define BOOTLOADER_SIZE         0x4000  // 16KB
+#define APP_START_ADDR          0x00004000
+#define APP_MAX_SIZE            0x0000BC00  // 47KB
 
 // Flash页大小（根据MCU型号修改）
 #define FLASH_PAGE_SIZE         0x00000800  // 2KB
@@ -333,5 +333,5 @@ printf("Status: %s\n", Bootloader_GetStatusString(status));
 **版本**: v1.0.0  
 **日期**: 2025-11-05  
 **作者**: Your Name  
-**MCU**: STM32F103ZE (可移植到其他STM32系列)
+**MCU**: STM32F103C8 (可移植到其他STM32系列)
 
