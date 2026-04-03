@@ -28,7 +28,12 @@ application\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
 application\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
 application\main.o: ../Core/Inc/usart.h
 application\main.o: ../Core/Inc/gpio.h
-application\main.o: ..\bootloader\bootloader.h
+application\main.o: ../bootloader/bootloader.h
 application\main.o: D:\Keil5\ARM\ARMCC\Bin\..\include\string.h
 application\main.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdio.h
-application\main.o: ..\bootloader\bootloader_uart.h
+application\main.o: ../bootloader/bootloader_uart.h
+application\main.o: ../WBR3_SDK/wifi.h
+application\main.o: ../WBR3_SDK/protocol.h
+application\main.o: ../WBR3_SDK/tuya_type.h
+application\main.o: ../WBR3_SDK/system.h
+application\main.o: ../WBR3_SDK/mcu_api.h

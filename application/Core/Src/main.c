@@ -25,6 +25,7 @@
 /* USER CODE BEGIN Includes */
 #include "bootloader.h"
 #include "bootloader_uart.h"
+#include "wifi.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -45,7 +46,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+uint8_t temp_wifi_uart_rx_buf[256];  /* 串口接收缓冲区 */
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -68,7 +69,7 @@ int main(void)
 
   /* USER CODE BEGIN 1 */
 	
-	/* 设置中断向量表偏移 - 必须在最前面！ */
+	/* 设置中断向量表偏�? - 必须在最前面�? */
   SCB->VTOR = APP_START_ADDR;
 	
   /* USER CODE END 1 */
@@ -96,21 +97,26 @@ int main(void)
   /* 初始化Bootloader */
   Bootloader_Init();
   
-  /* 清空UART缓冲区，避免之前的数据干扰 */
+  /* 清空UART缓冲区，避免之前的数据干�? */
   __HAL_UART_FLUSH_DRREGISTER(&huart1);
   __HAL_UART_CLEAR_FLAG(&huart1, UART_FLAG_RXNE);
   __HAL_UART_CLEAR_FLAG(&huart1, UART_FLAG_TC);
-  
+  HAL_UART_Receive_IT(&huart1, temp_wifi_uart_rx_buf, 1);  // 启动UART接收中断，数据由MCU_SDK处理
   /* 初始化串口IAP协议 */
   Bootloader_UART_Init(&huart1);
 	
 	Bootloader_UART_SendString("  STM32 Application enter successfull!\r\n");
+
+  /* 初始化wifi协议,必须在MCU初始化代码中调用该函数 */
+  wifi_protocol_init();  
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    wifi_uart_service();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -158,7 +164,15 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+  if (huart->Instance == USART1) 
+  {
+	  HAL_UART_IRQHandler(&huart1);	  
+    uart_receive_input(temp_wifi_uart_rx_buf[0]);  // 将接收到的数据传递给MCU_SDK处理
+    HAL_UART_Receive_IT(&huart1,temp_wifi_uart_rx_buf,1);
+  }
+}
 /* USER CODE END 4 */
 
 /**

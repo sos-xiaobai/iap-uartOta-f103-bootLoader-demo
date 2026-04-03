@@ -81,7 +81,7 @@
           </BeforeMake>
           <AfterMake>
             <RunUserProg1>1</RunUserProg1>
-            <RunUserProg2>0</RunUserProg2>
+            <RunUserProg2>1</RunUserProg2>
             <UserProg1Name>fromelf.exe --bin -o application.bin application\application.axf</UserProg1Name>
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
@@ -336,7 +336,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F103xB</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;..\bootloader</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;../bootloader;../WBR3_SDK</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -514,6 +514,26 @@
               <FileName>bootloader_uart.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\bootloader\bootloader_uart.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>WBR3_SDK</GroupName>
+          <Files>
+            <File>
+              <FileName>mcu_api.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\WBR3_SDK\mcu_api.c</FilePath>
+            </File>
+            <File>
+              <FileName>protocol.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\WBR3_SDK\protocol.c</FilePath>
+            </File>
+            <File>
+              <FileName>system.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\WBR3_SDK\system.c</FilePath>
             </File>
           </Files>
         </Group>

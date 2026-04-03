@@ -22,13 +22,51 @@ Dialog DLL:      TCM.DLL V1.32.0.0
  
 <h2>Project:</h2>
 D:\RM\sun_project\ota_f103c8\application\MDK-ARM\application.uvprojx
-Project File Date:  03/22/2026
+Project File Date:  04/03/2026
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'D:\Keil5\ARM\ARMCC\Bin'
 Build target 'application'
-After Build - User command #1: fromelf.exe --bin -o application.bin application\application.axf
-"application\application.axf" - 0 Error(s), 0 Warning(s).
+compiling system.c...
+..\WBR3_SDK\wifi.h(191): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\WBR3_SDK\system.c(524): error:  #20: identifier "PACKAGE_SIZE" is undefined
+              firm_flag = PACKAGE_SIZE;
+..\WBR3_SDK\system.c(541): warning:  #223-D: function "upgrade_package_choose" declared implicitly
+              upgrade_package_choose(PACKAGE_SIZE);
+..\WBR3_SDK\system.c(565): warning:  #223-D: function "mcu_firm_update_handle" declared implicitly
+                      ret = mcu_firm_update_handle(firmware_addr, dp_len, 0);
+..\WBR3_SDK\system.c(568): warning:  #223-D: function "mcu_firm_update_handle" declared implicitly
+                      ret = mcu_firm_update_handle(firmware_addr, dp_len, total_len - 4);
+..\WBR3_SDK\system.c: 4 warnings, 1 error
+compiling mcu_api.c...
+..\WBR3_SDK\wifi.h(191): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\WBR3_SDK\mcu_api.c(1556): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\WBR3_SDK\mcu_api.c: 2 warnings, 0 errors
+compiling protocol.c...
+..\WBR3_SDK\wifi.h(191): warning:  #1-D: last line of file ends without a newline
+  #endif
+../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h(158): error:  #40: expected an identifier
+    
+ISABLE = 0, 
+../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h(159): error:  #40: expected an identifier
+    
+NABLE = !DISABLE
+../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h(165): error:  #40: expected an identifier
+    
+UCCESS = 0U,
+../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h(166): error:  #40: expected an identifier
+    
+RROR = !SUCCESS
+..\WBR3_SDK\protocol.c: 1 warning, 4 errors
+compiling stm32f1xx_it.c...
+compiling main.c...
+../WBR3_SDK/wifi.h(191): warning:  #1-D: last line of file ends without a newline
+  #endif
+../Core/Src/main.c: 1 warning, 0 errors
+"application\application.axf" - 5 Error(s), 8 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -52,7 +90,8 @@ Package Vendor: Keil
 
    * Component: ARM::CMSIS:CORE:6.0.0
       Include file:  CMSIS\Core\Include\tz_context.h
-Build Time Elapsed:  00:00:01
+Target not created.
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>
