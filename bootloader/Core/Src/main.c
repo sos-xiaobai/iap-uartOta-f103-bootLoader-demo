@@ -148,13 +148,12 @@ int main(void)
   if (!enter_iap)
   {
       Bootloader_UART_SendString("\r\n");
-      Bootloader_UART_SendString("Press 'U' to enter IAP mode, or wait to run APP...\r\n");
+      Bootloader_UART_SendString("Wait Firmware, or wait to run APP...\r\n");
       Bootloader_UART_SendString("Waiting ");
       
-      /* 等待30秒，�?测是否收到升级命�? */
-      uint32_t wait_time = 30000;  /* 等待时间（毫秒）*/
+      /* 等待10秒，是否收到升级命令 */
+      uint32_t wait_time = 10000;  /* 等待时间（毫秒）*/
       uint32_t start_tick = HAL_GetTick();
-      uint8_t rx_byte;
       
       while ((HAL_GetTick() - start_tick) < wait_time)
       {
@@ -165,32 +164,13 @@ int main(void)
               Bootloader_UART_SendString(".");
               last_dot = HAL_GetTick();
           }
-          
-          /* �?查是否收到串口数�? */
-          if (HAL_UART_Receive(&huart1, &rx_byte, 1, 10) == HAL_OK)
-          {
-              /* 收到 'U' �? 'u' 进入IAP模式 */
-              if (rx_byte == 'U' || rx_byte == 'u')
-              {
-                  Bootloader_UART_SendString("\r\n");
-                  Bootloader_UART_SendString("IAP command received!\r\n");
-                  enter_iap = 1;
-                  break;
-              }
-              /* 收到IAP数据包头�?0xAA55）的第一个字�? */
-              else if (rx_byte == 0xAA)
-              {
-                  Bootloader_UART_SendString("\r\n");
-                  Bootloader_UART_SendString("IAP packet detected!\r\n");
-                  enter_iap = 1;
-                  break;
-              }
+          /*判断串口接收缓存中是否有数据 有数据 开启固件升级*/
+          if(with_data_rxbuff()){
+              enter_iap = 1;
+              break;
           }
-          
           HAL_Delay(10);
       }
-      
-      Bootloader_UART_SendString("\r\n");
   }
   
   /* ========== 根据标志决定是进入IAP还是跳转APP ========== */
@@ -202,9 +182,6 @@ int main(void)
       Bootloader_UART_SendString("  Entering IAP Mode\r\n");
       Bootloader_UART_SendString("==================================================\r\n");
       Bootloader_UART_SendString("Waiting for firmware...\r\n");
-      Bootloader_UART_SendString("\r\n");
-      Bootloader_UART_SendString("Upload command:\r\n");
-      Bootloader_UART_SendString("  python iap_upload.py -p COMx -f firmware.bin --version 1.0.0\r\n");
       Bootloader_UART_SendString("\r\n");
   }
   else
@@ -270,6 +247,7 @@ int main(void)
      */
 
     wifi_uart_service();
+    
     //Bootloader_UART_Process();
     
     /* LED闪烁指示Bootloader运行状�?�（可�?�） */

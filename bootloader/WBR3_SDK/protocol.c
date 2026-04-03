@@ -306,7 +306,16 @@ u8 mcu_firm_update_handle(const u8 value[], u32 position, u16 length) {
 #error "请自行完成MCU固件升级代码,完成后请删除该行"
 #endif
     if (length == 0) {
-        // 固件数据发送完成
+        // 固件数据发送完成 最后一包不包含数据 仅做升级结束处理
+        IAP_StatusTypeDef status;
+        status = IAP_EndUpdate();  // 固件升级结束 校验程序是否正确 修改flash标志位
+        if(status != IAP_SUCCESS) {
+            // 固件升级结束处理失败,直接返回错误
+            return ERROR;
+        }else{
+            // 固件升级结束处理成功
+            return SUCCESS;
+        }
     } else {
         // 固件数据处理
         /* 写入数据 */

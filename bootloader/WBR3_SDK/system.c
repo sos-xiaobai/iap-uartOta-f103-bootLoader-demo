@@ -540,6 +540,10 @@ void data_handle(u16 offset) {
 
             upgrade_package_choose(PACKAGE_SIZE);
             firm_update_flag = UPDATE_START_CMD;
+
+             // 固件升级开始处理,修改flash标志位
+            IAP_StartUpdate();
+
             break;
 
         case UPDATE_TRANS_CMD:  // 升级传输
@@ -560,19 +564,27 @@ void data_handle(u16 offset) {
                 firmware_addr = (u8 *)wifi_data_process_buf;
                 firmware_addr += (offset + DATA_START + 4);
 
-                if ((total_len == 4) && (dp_len == firm_length)) {
-                    // 最后一包
-                    ret = mcu_firm_update_handle(firmware_addr, dp_len, 0);
+                if ((total_len == 4) && (dp_len == firm_length))
+                {
+                    // 最后一包 不包含数据 仅包含升级包长度 用于校验升级包完整性和正确性
                     firm_update_flag = 0;
-                } else if ((total_len - 4) <= firm_size) {
-                    ret = mcu_firm_update_handle(firmware_addr, dp_len, total_len - 4);
-                } else {
+                    if (mcu_firm_update_handle(firmware_addr, dp_len, 0) == SUCCESS)
+                    {
+                        wifi_uart_write_frame(UPDATE_TRANS_CMD, MCU_TX_VER, 0);
+                    }
+                }
+                else if ((total_len - 4) <= firm_size)
+                {
+                    // 升级包数据
+                    if (mcu_firm_update_handle(firmware_addr, dp_len, total_len - 4) == SUCCESS)
+                    {
+                        wifi_uart_write_frame(UPDATE_TRANS_CMD, MCU_TX_VER, 0);
+                    };
+                }
+                else
+                {
                     firm_update_flag = 0;
                     ret = ERROR;
-                }
-
-                if (ret == SUCCESS) {
-                    wifi_uart_write_frame(UPDATE_TRANS_CMD, MCU_TX_VER, 0);
                 }
                 // 恢复一切数据上报
                 stop_update_flag = DISABLE;

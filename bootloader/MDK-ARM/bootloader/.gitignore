@@ -1,0 +1,46 @@
+# dot files
+/.vscode/launch.json
+/.settings
+/.eide/log
+/.eide.usr.ctx.json
+
+# project out
+/build
+/bin
+/obj
+/out
+
+*.o
+*.axf
+*.hex
+*.d
+*.crf
+
+# eide template
+*.ept
+*.eide-template
+
+
+# dot files
+/.vscode/launch.json
+/.settings
+/.eide/log
+/.eide.usr.ctx.json
+
+# project out
+/build
+/bin
+/obj
+/out
+/bootloader
+
+# 屏蔽所有.o文件 .crf文件
+*.o
+*.crf
+*.hex
+
+# eide template
+*.ept
+*.eide-template
+
+bootloader/MDK-ARM/bootloader/stm32f1xx_hal_gpio_ex.o
