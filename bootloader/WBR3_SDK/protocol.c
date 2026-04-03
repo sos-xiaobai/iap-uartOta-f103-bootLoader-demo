@@ -309,13 +309,13 @@ u8 mcu_firm_update_handle(const u8 value[], u32 position, u16 length) {
         // 固件数据发送完成
     } else {
         // 固件数据处理
-        /* boot写入数据 app暂时不做处理*/
-        // IAP_StatusTypeDef status;
-        // status = IAP_WriteData(position, (uint8_t *)value, length);
-        // if(status != IAP_SUCCESS) {
-        //     // 固件数据写入失败,可以选择重试或者直接返回错误
-        //     return ERROR;
-        // }
+        /* 写入数据 */
+        IAP_StatusTypeDef status;
+        status = IAP_WriteData(position, (uint8_t *)value, length);
+        if(status != IAP_SUCCESS) {
+            // 固件数据写入失败,可以选择重试或者直接返回错误
+            return ERROR;
+        }
     }
 
     return SUCCESS;

@@ -25,6 +25,7 @@
 /* USER CODE BEGIN Includes */
 #include "bootloader.h"
 #include "bootloader_uart.h"
+#include "wifi.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -45,6 +46,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+uint8_t temp_wifi_uart_rx_buf[256];  /* 串口接收缓冲区 */
 uint8_t enter_iap = 0;  /* 进入IAP模式标志 */
 /* USER CODE END PV */
 
@@ -93,15 +95,18 @@ int main(void)
   /* 初始化Bootloader */
   Bootloader_Init();
   
-  /* 清空UART缓冲区，避免之前的数据干扰 */
+  /* 清空UART缓冲区，避免之前的数据干�? */
   __HAL_UART_FLUSH_DRREGISTER(&huart1);
   __HAL_UART_CLEAR_FLAG(&huart1, UART_FLAG_RXNE);
   __HAL_UART_CLEAR_FLAG(&huart1, UART_FLAG_TC);
-  
+  HAL_UART_Receive_IT(&huart1, temp_wifi_uart_rx_buf, 1);  // 启动UART接收中断，数据由MCU_SDK处理
   /* 初始化串口IAP协议 */
   Bootloader_UART_Init(&huart1);
   
-  /* 发送启动信息 */
+  /* 初始化wifi协议,必须在MCU初始化代码中调用该函数 */
+  wifi_protocol_init(); 
+
+  /* 发�?�启动信�? */
   Bootloader_UART_SendString("\r\n");
   Bootloader_UART_SendString("====================================\r\n");
   Bootloader_UART_SendString("  STM32 IAP Bootloader v1.0.0\r\n");
@@ -110,7 +115,7 @@ int main(void)
   
   /* ========== 判断是否进入IAP升级模式 ========== */
   //uint8_t enter_iap = 0;  /* 进入IAP模式标志 */
-  /* 方式1: 检查是否有未完成的升级标志 */
+  /* 方式1: �?查是否有未完成的升级标志 */
   if (Bootloader_CheckUpdateFlag())
   {
       Bootloader_UART_SendString("WARNING: Last update incomplete!\r\n");
@@ -118,16 +123,16 @@ int main(void)
       enter_iap = 1;
   }
   
-  /* 方式2: 检查APP是否有效 */
+  /* 方式2: �?查APP是否有效 */
   if (!enter_iap && !Bootloader_CheckAppValid())
   {
       Bootloader_UART_SendString("Application invalid!\r\n");
       enter_iap = 1;
   }
   
-  /* 方式3: GPIO按键触发（可选，需要配置对应的GPIO）*/
-  /* 取消下面的注释来启用按键触发功能：
-   * 1. 在CubeMX中配置一个GPIO输入引脚（如PA0），设置为上拉输入
+  /* 方式3: GPIO按键触发（可选，�?要配置对应的GPIO�?*/
+  /* 取消下面的注释来启用按键触发功能�?
+   * 1. 在CubeMX中配置一个GPIO输入引脚（如PA0），设置为上拉输�?
    * 2. 修改下面的GPIO_Port和GPIO_Pin为实际配置的引脚
    * 3. 按住按键上电即可进入IAP模式
    */
@@ -139,21 +144,21 @@ int main(void)
   }
   */
   
-  /* 方式4: 超时检测 - 等待串口命令 */
+  /* 方式4: 超时�?�? - 等待串口命令 */
   if (!enter_iap)
   {
       Bootloader_UART_SendString("\r\n");
       Bootloader_UART_SendString("Press 'U' to enter IAP mode, or wait to run APP...\r\n");
       Bootloader_UART_SendString("Waiting ");
       
-      /* 等待30秒，检测是否收到升级命令 */
+      /* 等待30秒，�?测是否收到升级命�? */
       uint32_t wait_time = 30000;  /* 等待时间（毫秒）*/
       uint32_t start_tick = HAL_GetTick();
       uint8_t rx_byte;
       
       while ((HAL_GetTick() - start_tick) < wait_time)
       {
-          /* 每500ms打印一个点 */
+          /* �?500ms打印�?个点 */
           static uint32_t last_dot = 0;
           if (HAL_GetTick() - last_dot > 500)
           {
@@ -161,10 +166,10 @@ int main(void)
               last_dot = HAL_GetTick();
           }
           
-          /* 检查是否收到串口数据 */
+          /* �?查是否收到串口数�? */
           if (HAL_UART_Receive(&huart1, &rx_byte, 1, 10) == HAL_OK)
           {
-              /* 收到 'U' 或 'u' 进入IAP模式 */
+              /* 收到 'U' �? 'u' 进入IAP模式 */
               if (rx_byte == 'U' || rx_byte == 'u')
               {
                   Bootloader_UART_SendString("\r\n");
@@ -172,7 +177,7 @@ int main(void)
                   enter_iap = 1;
                   break;
               }
-              /* 收到IAP数据包头（0xAA55）的第一个字节 */
+              /* 收到IAP数据包头�?0xAA55）的第一个字�? */
               else if (rx_byte == 0xAA)
               {
                   Bootloader_UART_SendString("\r\n");
@@ -204,10 +209,10 @@ int main(void)
   }
   else
   {
-      /* 跳转到应用程序 */
+      /* 跳转到应用程�? */
       if (Bootloader_CheckAppValid())
       {
-          /* 显示版本信息（如果有）*/
+          /* 显示版本信息（如果有�?*/
           if (Bootloader_IsAppVersionValid())
           {
               Firmware_VersionTypeDef app_version;
@@ -232,12 +237,12 @@ int main(void)
           HAL_Delay(100);
           Bootloader_JumpToApp();
           
-          /* 如果跳转失败，会继续执行到这里 */
+          /* 如果跳转失败，会继续执行到这�? */
           Bootloader_UART_SendString("ERROR: Jump to application failed!\r\n");
       }
       else
       {
-          /* 理论上不会到这里，因为前面已经检查过了 */
+          /* 理论上不会到这里，因为前面已经检查过�? */
           Bootloader_UART_SendString("ERROR: Application invalid!\r\n");
       }
       
@@ -257,16 +262,18 @@ int main(void)
     /* 该函数会阻塞等待串口数据，超时后返回 */
     /* 支持的命令：
      * - IAP_CMD_GET_INFO      (0xA4): 获取Bootloader信息
-     * - IAP_CMD_START_UPDATE  (0xA5): 开始升级
+     * - IAP_CMD_START_UPDATE  (0xA5): �?始升�?
      * - IAP_CMD_WRITE         (0xA1): 写入固件数据
      * - IAP_CMD_END_UPDATE    (0xA6): 结束升级
      * - IAP_CMD_VERIFY        (0xA7): 校验固件
-     * - IAP_CMD_JUMP          (0xA3): 跳转到应用程序
+     * - IAP_CMD_JUMP          (0xA3): 跳转到应用程�?
      */
-    Bootloader_UART_Process();
+
+    wifi_uart_service();
+    //Bootloader_UART_Process();
     
-    /* LED闪烁指示Bootloader运行状态（可选） */
-    /* 取消注释下面的代码来启用LED指示：
+    /* LED闪烁指示Bootloader运行状�?�（可�?�） */
+    /* 取消注释下面的代码来启用LED指示�?
     static uint32_t led_tick = 0;
     if (HAL_GetTick() - led_tick > 500)
     {
@@ -318,7 +325,15 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+  if (huart->Instance == USART1) 
+  {
+	  HAL_UART_IRQHandler(&huart1);	  
+    uart_receive_input(temp_wifi_uart_rx_buf[0]);  // 将接收到的数据传递给MCU_SDK处理
+    HAL_UART_Receive_IT(&huart1,temp_wifi_uart_rx_buf,1);
+  }
+}
 /* USER CODE END 4 */
 
 /**

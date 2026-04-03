@@ -10,6 +10,9 @@
 /obj
 /out
 
+/application/MDK-ARM/application
+/bootloader/MDK-ARM/bootloader
+
 # 屏蔽所有.o文件 .crf文件
 *.o
 *.crf

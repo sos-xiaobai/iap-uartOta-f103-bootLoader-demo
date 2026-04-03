@@ -309,6 +309,96 @@ Section Cross References
     bootloader_uart.o(i.SendResponse) refers to stm32f1xx_hal_uart.o(i.HAL_UART_Transmit) for HAL_UART_Transmit
     bootloader_uart.o(i.SendResponse) refers to bootloader_uart.o(.data) for p_huart
     bootloader_uart.o(i.SendResponse) refers to bootloader_uart.o(.bss) for tx_packet
+    mcu_api.o(i.mcu_dp_array_update) refers to system.o(i.set_wifi_uart_byte) for set_wifi_uart_byte
+    mcu_api.o(i.mcu_dp_array_update) refers to system.o(i.set_wifi_uart_buffer) for set_wifi_uart_buffer
+    mcu_api.o(i.mcu_dp_array_update) refers to system.o(i.wifi_uart_write_frame) for wifi_uart_write_frame
+    mcu_api.o(i.mcu_dp_bool_update) refers to system.o(i.set_wifi_uart_byte) for set_wifi_uart_byte
+    mcu_api.o(i.mcu_dp_bool_update) refers to system.o(i.wifi_uart_write_frame) for wifi_uart_write_frame
+    mcu_api.o(i.mcu_dp_bool_update) refers to system.o(.data) for stop_update_flag
+    mcu_api.o(i.mcu_dp_enum_update) refers to system.o(i.set_wifi_uart_byte) for set_wifi_uart_byte
+    mcu_api.o(i.mcu_dp_enum_update) refers to system.o(i.wifi_uart_write_frame) for wifi_uart_write_frame
+    mcu_api.o(i.mcu_dp_enum_update) refers to system.o(.data) for stop_update_flag
+    mcu_api.o(i.mcu_dp_fault_update) refers to system.o(i.set_wifi_uart_byte) for set_wifi_uart_byte
+    mcu_api.o(i.mcu_dp_fault_update) refers to system.o(i.wifi_uart_write_frame) for wifi_uart_write_frame
+    mcu_api.o(i.mcu_dp_fault_update) refers to system.o(.data) for stop_update_flag
+    mcu_api.o(i.mcu_dp_raw_update) refers to system.o(i.set_wifi_uart_byte) for set_wifi_uart_byte
+    mcu_api.o(i.mcu_dp_raw_update) refers to system.o(i.set_wifi_uart_buffer) for set_wifi_uart_buffer
+    mcu_api.o(i.mcu_dp_raw_update) refers to system.o(i.wifi_uart_write_frame) for wifi_uart_write_frame
+    mcu_api.o(i.mcu_dp_raw_update) refers to system.o(.data) for stop_update_flag
+    mcu_api.o(i.mcu_dp_string_update) refers to system.o(i.set_wifi_uart_byte) for set_wifi_uart_byte
+    mcu_api.o(i.mcu_dp_string_update) refers to system.o(i.set_wifi_uart_buffer) for set_wifi_uart_buffer
+    mcu_api.o(i.mcu_dp_string_update) refers to system.o(i.wifi_uart_write_frame) for wifi_uart_write_frame
+    mcu_api.o(i.mcu_dp_string_update) refers to system.o(.data) for stop_update_flag
+    mcu_api.o(i.mcu_dp_struct_update) refers to system.o(i.set_wifi_uart_byte) for set_wifi_uart_byte
+    mcu_api.o(i.mcu_dp_struct_update) refers to system.o(i.set_wifi_uart_buffer) for set_wifi_uart_buffer
+    mcu_api.o(i.mcu_dp_struct_update) refers to system.o(i.wifi_uart_write_frame) for wifi_uart_write_frame
+    mcu_api.o(i.mcu_dp_value_update) refers to system.o(i.set_wifi_uart_byte) for set_wifi_uart_byte
+    mcu_api.o(i.mcu_dp_value_update) refers to system.o(i.wifi_uart_write_frame) for wifi_uart_write_frame
+    mcu_api.o(i.mcu_dp_value_update) refers to system.o(.data) for stop_update_flag
+    mcu_api.o(i.mcu_get_dp_download_value) refers to mcu_api.o(i.byte_to_int) for byte_to_int
+    mcu_api.o(i.mcu_get_reset_wifi_flag) refers to system.o(.data) for reset_wifi_flag
+    mcu_api.o(i.mcu_get_wifi_work_state) refers to system.o(.data) for wifi_work_state
+    mcu_api.o(i.mcu_get_wifimode_flag) refers to system.o(.data) for set_wifimode_flag
+    mcu_api.o(i.mcu_reset_wifi) refers to system.o(i.wifi_uart_write_frame) for wifi_uart_write_frame
+    mcu_api.o(i.mcu_reset_wifi) refers to system.o(.data) for reset_wifi_flag
+    mcu_api.o(i.mcu_set_wifi_mode) refers to system.o(i.set_wifi_uart_byte) for set_wifi_uart_byte
+    mcu_api.o(i.mcu_set_wifi_mode) refers to system.o(i.wifi_uart_write_frame) for wifi_uart_write_frame
+    mcu_api.o(i.mcu_set_wifi_mode) refers to system.o(.data) for set_wifimode_flag
+    mcu_api.o(i.mcu_start_wifitest) refers to system.o(i.wifi_uart_write_frame) for wifi_uart_write_frame
+    mcu_api.o(i.uart_receive_buff_input) refers to mcu_api.o(i.uart_receive_input) for uart_receive_input
+    mcu_api.o(i.uart_receive_input) refers to system.o(.data) for rx_buf_out
+    mcu_api.o(i.uart_receive_input) refers to system.o(.bss) for wifi_uart_rx_buf
+    mcu_api.o(i.wifi_protocol_init) refers to system.o(.bss) for wifi_uart_rx_buf
+    mcu_api.o(i.wifi_protocol_init) refers to system.o(.data) for rx_buf_in
+    mcu_api.o(i.wifi_uart_service) refers to system.o(i.take_byte_rxbuff) for take_byte_rxbuff
+    mcu_api.o(i.wifi_uart_service) refers to system.o(i.with_data_rxbuff) for with_data_rxbuff
+    mcu_api.o(i.wifi_uart_service) refers to system.o(i.get_check_sum) for get_check_sum
+    mcu_api.o(i.wifi_uart_service) refers to system.o(i.data_handle) for data_handle
+    mcu_api.o(i.wifi_uart_service) refers to mcu_api.o(i.tuya_memcpy) for tuya_memcpy
+    mcu_api.o(i.wifi_uart_service) refers to mcu_api.o(.data) for rx_in
+    mcu_api.o(i.wifi_uart_service) refers to system.o(.bss) for wifi_data_process_buf
+    mcu_api.o(i.wifi_uart_service) refers to system.o(.data) for rx_buf_out
+    protocol.o(i.dp_download_angle_handle) refers to mcu_api.o(i.mcu_get_dp_download_value) for mcu_get_dp_download_value
+    protocol.o(i.dp_download_angle_handle) refers to mcu_api.o(i.mcu_dp_value_update) for mcu_dp_value_update
+    protocol.o(i.dp_download_handle) refers to protocol.o(i.dp_download_angle_handle) for dp_download_angle_handle
+    protocol.o(i.mcu_firm_update_handle) refers to bootloader.o(i.IAP_WriteData) for IAP_WriteData
+    protocol.o(i.uart_transmit_output) refers to stm32f1xx_hal_uart.o(i.HAL_UART_Transmit) for HAL_UART_Transmit
+    protocol.o(i.uart_transmit_output) refers to usart.o(.bss) for huart1
+    protocol.o(i.upgrade_package_choose) refers to system.o(i.set_wifi_uart_byte) for set_wifi_uart_byte
+    protocol.o(i.upgrade_package_choose) refers to system.o(i.wifi_uart_write_frame) for wifi_uart_write_frame
+    system.o(i.data_handle) refers to system.o(i.heat_beat_check) for heat_beat_check
+    system.o(i.data_handle) refers to system.o(i.product_info_update) for product_info_update
+    system.o(i.data_handle) refers to system.o(i.get_mcu_wifi_mode) for get_mcu_wifi_mode
+    system.o(i.data_handle) refers to system.o(i.wifi_uart_write_frame) for wifi_uart_write_frame
+    system.o(i.data_handle) refers to system.o(i.data_point_handle) for data_point_handle
+    system.o(i.data_handle) refers to protocol.o(i.all_data_update) for all_data_update
+    system.o(i.data_handle) refers to protocol.o(i.upgrade_package_choose) for upgrade_package_choose
+    system.o(i.data_handle) refers to protocol.o(i.mcu_firm_update_handle) for mcu_firm_update_handle
+    system.o(i.data_handle) refers to protocol.o(i.wifi_test_result) for wifi_test_result
+    system.o(i.data_handle) refers to system.o(.bss) for wifi_data_process_buf
+    system.o(i.data_handle) refers to system.o(.data) for wifi_work_state
+    system.o(i.data_point_handle) refers to system.o(i.get_dowmload_dpid_index) for get_dowmload_dpid_index
+    system.o(i.data_point_handle) refers to protocol.o(i.dp_download_handle) for dp_download_handle
+    system.o(i.data_point_handle) refers to protocol.o(.constdata) for download_cmd
+    system.o(i.get_dowmload_dpid_index) refers to protocol.o(i.get_download_cmd_total) for get_download_cmd_total
+    system.o(i.get_dowmload_dpid_index) refers to protocol.o(.constdata) for download_cmd
+    system.o(i.get_mcu_wifi_mode) refers to system.o(i.wifi_uart_write_frame) for wifi_uart_write_frame
+    system.o(i.heat_beat_check) refers to system.o(i.set_wifi_uart_byte) for set_wifi_uart_byte
+    system.o(i.heat_beat_check) refers to system.o(i.wifi_uart_write_frame) for wifi_uart_write_frame
+    system.o(i.heat_beat_check) refers to system.o(.data) for mcu_reset_state
+    system.o(i.product_info_update) refers to mcu_api.o(i.tuya_strlen) for tuya_strlen
+    system.o(i.product_info_update) refers to system.o(i.set_wifi_uart_buffer) for set_wifi_uart_buffer
+    system.o(i.product_info_update) refers to system.o(i.wifi_uart_write_frame) for wifi_uart_write_frame
+    system.o(i.set_wifi_uart_buffer) refers to mcu_api.o(i.tuya_memcpy) for tuya_memcpy
+    system.o(i.set_wifi_uart_buffer) refers to system.o(.bss) for wifi_uart_tx_buf
+    system.o(i.set_wifi_uart_byte) refers to system.o(.bss) for wifi_uart_tx_buf
+    system.o(i.take_byte_rxbuff) refers to system.o(.data) for rx_buf_out
+    system.o(i.take_byte_rxbuff) refers to system.o(.bss) for wifi_uart_rx_buf
+    system.o(i.wifi_uart_write_data) refers to protocol.o(i.uart_transmit_output) for uart_transmit_output
+    system.o(i.wifi_uart_write_frame) refers to system.o(i.get_check_sum) for get_check_sum
+    system.o(i.wifi_uart_write_frame) refers to system.o(i.wifi_uart_write_data) for wifi_uart_write_data
+    system.o(i.wifi_uart_write_frame) refers to system.o(.bss) for wifi_uart_tx_buf
+    system.o(i.with_data_rxbuff) refers to system.o(.data) for rx_buf_in
     __2snprintf.o(.text) refers to _printf_char_common.o(.text) for _printf_char_common
     __2snprintf.o(.text) refers to _sputc.o(.text) for _sputc
     __2snprintf.o(.text) refers to _snputc.o(.text) for _snputc
@@ -682,8 +772,72 @@ Removing Unused input sections from the image.
     Removing bootloader_uart.o(.rev16_text), (4 bytes).
     Removing bootloader_uart.o(.revsh_text), (4 bytes).
     Removing bootloader_uart.o(.rrx_text), (6 bytes).
+    Removing mcu_api.o(.rev16_text), (4 bytes).
+    Removing mcu_api.o(.revsh_text), (4 bytes).
+    Removing mcu_api.o(.rrx_text), (6 bytes).
+    Removing mcu_api.o(i.byte_to_int), (26 bytes).
+    Removing mcu_api.o(i.hex_to_bcd), (108 bytes).
+    Removing mcu_api.o(i.int_to_byte), (16 bytes).
+    Removing mcu_api.o(i.mcu_dp_array_update), (92 bytes).
+    Removing mcu_api.o(i.mcu_dp_bool_update), (100 bytes).
+    Removing mcu_api.o(i.mcu_dp_enum_update), (88 bytes).
+    Removing mcu_api.o(i.mcu_dp_fault_update), (200 bytes).
+    Removing mcu_api.o(i.mcu_dp_raw_update), (116 bytes).
+    Removing mcu_api.o(i.mcu_dp_string_update), (116 bytes).
+    Removing mcu_api.o(i.mcu_dp_struct_update), (92 bytes).
+    Removing mcu_api.o(i.mcu_dp_value_update), (120 bytes).
+    Removing mcu_api.o(i.mcu_get_dp_download_bool), (6 bytes).
+    Removing mcu_api.o(i.mcu_get_dp_download_enum), (6 bytes).
+    Removing mcu_api.o(i.mcu_get_dp_download_value), (14 bytes).
+    Removing mcu_api.o(i.mcu_get_reset_wifi_flag), (12 bytes).
+    Removing mcu_api.o(i.mcu_get_wifi_work_state), (12 bytes).
+    Removing mcu_api.o(i.mcu_get_wifimode_flag), (12 bytes).
+    Removing mcu_api.o(i.mcu_reset_wifi), (24 bytes).
+    Removing mcu_api.o(i.mcu_set_wifi_mode), (40 bytes).
+    Removing mcu_api.o(i.mcu_start_wifitest), (14 bytes).
+    Removing mcu_api.o(i.tuya_memcpy), (68 bytes).
+    Removing mcu_api.o(i.tuya_memset), (34 bytes).
+    Removing mcu_api.o(i.tuya_strcmp), (32 bytes).
+    Removing mcu_api.o(i.tuya_strcpy), (34 bytes).
+    Removing mcu_api.o(i.tuya_strlen), (28 bytes).
+    Removing mcu_api.o(i.tuya_strncpy), (26 bytes).
+    Removing mcu_api.o(i.uart_receive_buff_input), (28 bytes).
+    Removing mcu_api.o(i.uart_receive_input), (88 bytes).
+    Removing mcu_api.o(i.wifi_protocol_init), (44 bytes).
+    Removing mcu_api.o(i.wifi_uart_service), (268 bytes).
+    Removing mcu_api.o(.data), (2 bytes).
+    Removing protocol.o(.rev16_text), (4 bytes).
+    Removing protocol.o(.revsh_text), (4 bytes).
+    Removing protocol.o(.rrx_text), (6 bytes).
+    Removing protocol.o(i.all_data_update), (2 bytes).
+    Removing protocol.o(i.dp_download_angle_handle), (40 bytes).
+    Removing protocol.o(i.dp_download_handle), (38 bytes).
+    Removing protocol.o(i.get_download_cmd_total), (4 bytes).
+    Removing protocol.o(i.mcu_firm_update_handle), (38 bytes).
+    Removing protocol.o(i.uart_transmit_output), (24 bytes).
+    Removing protocol.o(i.upgrade_package_choose), (28 bytes).
+    Removing protocol.o(i.wifi_test_result), (8 bytes).
+    Removing protocol.o(.constdata), (4 bytes).
+    Removing system.o(.rev16_text), (4 bytes).
+    Removing system.o(.revsh_text), (4 bytes).
+    Removing system.o(.rrx_text), (6 bytes).
+    Removing system.o(i.data_handle), (580 bytes).
+    Removing system.o(i.data_point_handle), (76 bytes).
+    Removing system.o(i.get_check_sum), (28 bytes).
+    Removing system.o(i.get_dowmload_dpid_index), (44 bytes).
+    Removing system.o(i.get_mcu_wifi_mode), (16 bytes).
+    Removing system.o(i.heat_beat_check), (56 bytes).
+    Removing system.o(i.product_info_update), (224 bytes).
+    Removing system.o(i.set_wifi_uart_buffer), (40 bytes).
+    Removing system.o(i.set_wifi_uart_byte), (16 bytes).
+    Removing system.o(i.take_byte_rxbuff), (60 bytes).
+    Removing system.o(i.wifi_uart_write_data), (36 bytes).
+    Removing system.o(i.wifi_uart_write_frame), (72 bytes).
+    Removing system.o(i.with_data_rxbuff), (28 bytes).
+    Removing system.o(.bss), (497 bytes).
+    Removing system.o(.data), (21 bytes).
 
-242 unused section(s) (total 14164 bytes) removed from the image.
+306 unused section(s) (total 18052 bytes) removed from the image.
 
 ==============================================================================
 
@@ -713,74 +867,74 @@ Image Symbol Table
     ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c 0x00000000   Number         0  stm32f1xx_hal_tim.o ABSOLUTE
     ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c 0x00000000   Number         0  stm32f1xx_hal_tim_ex.o ABSOLUTE
     ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c 0x00000000   Number         0  stm32f1xx_hal_uart.o ABSOLUTE
-    ../clib/angel/boardlib.s                 0x00000000   Number         0  boardinit2.o ABSOLUTE
     ../clib/angel/boardlib.s                 0x00000000   Number         0  boardinit3.o ABSOLUTE
+    ../clib/angel/boardlib.s                 0x00000000   Number         0  boardinit2.o ABSOLUTE
     ../clib/angel/boardlib.s                 0x00000000   Number         0  boardshut.o ABSOLUTE
     ../clib/angel/boardlib.s                 0x00000000   Number         0  boardinit1.o ABSOLUTE
-    ../clib/angel/handlers.s                 0x00000000   Number         0  __scatter_copy.o ABSOLUTE
     ../clib/angel/handlers.s                 0x00000000   Number         0  __scatter_zi.o ABSOLUTE
-    ../clib/angel/kernel.s                   0x00000000   Number         0  __rtentry.o ABSOLUTE
-    ../clib/angel/kernel.s                   0x00000000   Number         0  rtexit2.o ABSOLUTE
-    ../clib/angel/kernel.s                   0x00000000   Number         0  rtexit.o ABSOLUTE
-    ../clib/angel/kernel.s                   0x00000000   Number         0  __rtentry4.o ABSOLUTE
+    ../clib/angel/handlers.s                 0x00000000   Number         0  __scatter_copy.o ABSOLUTE
     ../clib/angel/kernel.s                   0x00000000   Number         0  __rtentry2.o ABSOLUTE
+    ../clib/angel/kernel.s                   0x00000000   Number         0  rtexit.o ABSOLUTE
+    ../clib/angel/kernel.s                   0x00000000   Number         0  rtexit2.o ABSOLUTE
+    ../clib/angel/kernel.s                   0x00000000   Number         0  __rtentry.o ABSOLUTE
+    ../clib/angel/kernel.s                   0x00000000   Number         0  __rtentry4.o ABSOLUTE
     ../clib/angel/rt.s                       0x00000000   Number         0  rt_raise.o ABSOLUTE
     ../clib/angel/scatter.s                  0x00000000   Number         0  __scatter.o ABSOLUTE
     ../clib/angel/startup.s                  0x00000000   Number         0  __main.o ABSOLUTE
     ../clib/angel/sys.s                      0x00000000   Number         0  libspace.o ABSOLUTE
-    ../clib/angel/sys.s                      0x00000000   Number         0  use_no_semi.o ABSOLUTE
     ../clib/angel/sys.s                      0x00000000   Number         0  indicate_semi.o ABSOLUTE
+    ../clib/angel/sys.s                      0x00000000   Number         0  use_no_semi.o ABSOLUTE
     ../clib/angel/sys.s                      0x00000000   Number         0  sys_stackheap_outer.o ABSOLUTE
     ../clib/angel/sysapp.c                   0x00000000   Number         0  sys_command.o ABSOLUTE
-    ../clib/angel/sysapp.c                   0x00000000   Number         0  sys_wrch.o ABSOLUTE
     ../clib/angel/sysapp.c                   0x00000000   Number         0  sys_exit.o ABSOLUTE
-    ../clib/armsys.c                         0x00000000   Number         0  argv_veneer.o ABSOLUTE
-    ../clib/armsys.c                         0x00000000   Number         0  no_argv.o ABSOLUTE
+    ../clib/angel/sysapp.c                   0x00000000   Number         0  sys_wrch.o ABSOLUTE
     ../clib/armsys.c                         0x00000000   Number         0  argv_veneer.o ABSOLUTE
     ../clib/armsys.c                         0x00000000   Number         0  _get_argv_nomalloc.o ABSOLUTE
+    ../clib/armsys.c                         0x00000000   Number         0  no_argv.o ABSOLUTE
+    ../clib/armsys.c                         0x00000000   Number         0  argv_veneer.o ABSOLUTE
     ../clib/heapalloc.c                      0x00000000   Number         0  hrguard.o ABSOLUTE
     ../clib/heapaux.c                        0x00000000   Number         0  heapauxi.o ABSOLUTE
-    ../clib/libinit.s                        0x00000000   Number         0  libshutdown2.o ABSOLUTE
-    ../clib/libinit.s                        0x00000000   Number         0  libinit2.o ABSOLUTE
-    ../clib/libinit.s                        0x00000000   Number         0  libshutdown.o ABSOLUTE
     ../clib/libinit.s                        0x00000000   Number         0  libinit.o ABSOLUTE
+    ../clib/libinit.s                        0x00000000   Number         0  libshutdown2.o ABSOLUTE
+    ../clib/libinit.s                        0x00000000   Number         0  libshutdown.o ABSOLUTE
+    ../clib/libinit.s                        0x00000000   Number         0  libinit2.o ABSOLUTE
     ../clib/longlong.s                       0x00000000   Number         0  llushr.o ABSOLUTE
-    ../clib/memcpset.s                       0x00000000   Number         0  rt_memcpy_w.o ABSOLUTE
     ../clib/memcpset.s                       0x00000000   Number         0  rt_memcpy_v6.o ABSOLUTE
+    ../clib/memcpset.s                       0x00000000   Number         0  rt_memcpy_w.o ABSOLUTE
     ../clib/memcpset.s                       0x00000000   Number         0  rt_memclr_w.o ABSOLUTE
-    ../clib/printf.c                         0x00000000   Number         0  __printf_ss.o ABSOLUTE
-    ../clib/printf.c                         0x00000000   Number         0  __printf_flags.o ABSOLUTE
-    ../clib/printf.c                         0x00000000   Number         0  _printf_dec.o ABSOLUTE
-    ../clib/printf.c                         0x00000000   Number         0  __printf.o ABSOLUTE
     ../clib/printf.c                         0x00000000   Number         0  noretval__2snprintf.o ABSOLUTE
     ../clib/printf.c                         0x00000000   Number         0  __2snprintf.o ABSOLUTE
+    ../clib/printf.c                         0x00000000   Number         0  __printf_flags.o ABSOLUTE
+    ../clib/printf.c                         0x00000000   Number         0  __printf_flags_ss_wp.o ABSOLUTE
+    ../clib/printf.c                         0x00000000   Number         0  __printf_ss_wp.o ABSOLUTE
+    ../clib/printf.c                         0x00000000   Number         0  __printf_flags_wp.o ABSOLUTE
     ../clib/printf.c                         0x00000000   Number         0  __printf_wp.o ABSOLUTE
+    ../clib/printf.c                         0x00000000   Number         0  __printf_nopercent.o ABSOLUTE
+    ../clib/printf.c                         0x00000000   Number         0  __printf_flags_ss.o ABSOLUTE
+    ../clib/printf.c                         0x00000000   Number         0  __printf_ss.o ABSOLUTE
+    ../clib/printf.c                         0x00000000   Number         0  _printf_dec.o ABSOLUTE
+    ../clib/printf.c                         0x00000000   Number         0  __printf.o ABSOLUTE
     ../clib/printf.c                         0x00000000   Number         0  _snputc.o ABSOLUTE
     ../clib/printf.c                         0x00000000   Number         0  _sputc.o ABSOLUTE
     ../clib/printf.c                         0x00000000   Number         0  _printf_char_common.o ABSOLUTE
     ../clib/printf.c                         0x00000000   Number         0  _printf_intcommon.o ABSOLUTE
-    ../clib/printf.c                         0x00000000   Number         0  __printf_flags_ss_wp.o ABSOLUTE
-    ../clib/printf.c                         0x00000000   Number         0  __printf_ss_wp.o ABSOLUTE
-    ../clib/printf.c                         0x00000000   Number         0  __printf_flags_wp.o ABSOLUTE
-    ../clib/printf.c                         0x00000000   Number         0  __printf_flags_ss.o ABSOLUTE
-    ../clib/printf.c                         0x00000000   Number         0  __printf_nopercent.o ABSOLUTE
-    ../clib/printf_percent.s                 0x00000000   Number         0  _printf_percent_end.o ABSOLUTE
     ../clib/printf_percent.s                 0x00000000   Number         0  _printf_d.o ABSOLUTE
     ../clib/printf_percent.s                 0x00000000   Number         0  _printf_percent.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_general.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  __raise.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_rtmem_inner.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_exit.o ABSOLUTE
+    ../clib/printf_percent.s                 0x00000000   Number         0  _printf_percent_end.o ABSOLUTE
     ../clib/signal.c                         0x00000000   Number         0  defsig_other.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_rtmem_formal.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_abrt_inner.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_fpe_inner.o ABSOLUTE
     ../clib/signal.c                         0x00000000   Number         0  defsig_segv_inner.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_rtmem_outer.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_rtred_inner.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_stak_inner.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_pvfn_inner.o ABSOLUTE
     ../clib/signal.c                         0x00000000   Number         0  defsig_cppl_inner.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_pvfn_inner.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_stak_inner.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_rtred_inner.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_rtmem_inner.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_fpe_inner.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_abrt_inner.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  __raise.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_exit.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_general.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_rtmem_formal.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_rtmem_outer.o ABSOLUTE
     ../clib/signal.s                         0x00000000   Number         0  defsig.o ABSOLUTE
     ../clib/stdlib.c                         0x00000000   Number         0  exit.o ABSOLUTE
     ../clib/string.c                         0x00000000   Number         0  strlen.o ABSOLUTE
@@ -805,6 +959,12 @@ Image Symbol Table
     ..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_tim.c 0x00000000   Number         0  stm32f1xx_hal_tim.o ABSOLUTE
     ..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_tim_ex.c 0x00000000   Number         0  stm32f1xx_hal_tim_ex.o ABSOLUTE
     ..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_uart.c 0x00000000   Number         0  stm32f1xx_hal_uart.o ABSOLUTE
+    ..\WBR3_SDK\mcu_api.c                    0x00000000   Number         0  mcu_api.o ABSOLUTE
+    ..\WBR3_SDK\protocol.c                   0x00000000   Number         0  protocol.o ABSOLUTE
+    ..\WBR3_SDK\system.c                     0x00000000   Number         0  system.o ABSOLUTE
+    ..\\WBR3_SDK\\mcu_api.c                  0x00000000   Number         0  mcu_api.o ABSOLUTE
+    ..\\WBR3_SDK\\protocol.c                 0x00000000   Number         0  protocol.o ABSOLUTE
+    ..\\WBR3_SDK\\system.c                   0x00000000   Number         0  system.o ABSOLUTE
     ..\\bootloader\\bootloader.c             0x00000000   Number         0  bootloader.o ABSOLUTE
     ..\\bootloader\\bootloader_uart.c        0x00000000   Number         0  bootloader_uart.o ABSOLUTE
     ..\bootloader\bootloader.c               0x00000000   Number         0  bootloader.o ABSOLUTE
@@ -1267,78 +1427,78 @@ Memory Map of the image
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
     0x08000000   0x08000000   0x000000ec   Data   RO            3    RESET               startup_stm32f103xb.o
-    0x080000ec   0x080000ec   0x00000008   Code   RO         2100  * !!!main             c_w.l(__main.o)
-    0x080000f4   0x080000f4   0x00000034   Code   RO         2268    !!!scatter          c_w.l(__scatter.o)
-    0x08000128   0x08000128   0x0000001a   Code   RO         2270    !!handler_copy      c_w.l(__scatter_copy.o)
+    0x080000ec   0x080000ec   0x00000008   Code   RO         2495  * !!!main             c_w.l(__main.o)
+    0x080000f4   0x080000f4   0x00000034   Code   RO         2663    !!!scatter          c_w.l(__scatter.o)
+    0x08000128   0x08000128   0x0000001a   Code   RO         2665    !!handler_copy      c_w.l(__scatter_copy.o)
     0x08000142   0x08000142   0x00000002   PAD
-    0x08000144   0x08000144   0x0000001c   Code   RO         2272    !!handler_zi        c_w.l(__scatter_zi.o)
-    0x08000160   0x08000160   0x00000000   Code   RO         2089    .ARM.Collect$$_printf_percent$$00000000  c_w.l(_printf_percent.o)
-    0x08000160   0x08000160   0x00000006   Code   RO         2088    .ARM.Collect$$_printf_percent$$00000009  c_w.l(_printf_d.o)
-    0x08000166   0x08000166   0x00000004   Code   RO         2111    .ARM.Collect$$_printf_percent$$00000017  c_w.l(_printf_percent_end.o)
-    0x0800016a   0x0800016a   0x00000002   Code   RO         2138    .ARM.Collect$$libinit$$00000000  c_w.l(libinit.o)
-    0x0800016c   0x0800016c   0x00000000   Code   RO         2145    .ARM.Collect$$libinit$$00000002  c_w.l(libinit2.o)
-    0x0800016c   0x0800016c   0x00000000   Code   RO         2147    .ARM.Collect$$libinit$$00000004  c_w.l(libinit2.o)
-    0x0800016c   0x0800016c   0x00000000   Code   RO         2150    .ARM.Collect$$libinit$$0000000A  c_w.l(libinit2.o)
-    0x0800016c   0x0800016c   0x00000000   Code   RO         2152    .ARM.Collect$$libinit$$0000000C  c_w.l(libinit2.o)
-    0x0800016c   0x0800016c   0x00000000   Code   RO         2154    .ARM.Collect$$libinit$$0000000E  c_w.l(libinit2.o)
-    0x0800016c   0x0800016c   0x00000000   Code   RO         2157    .ARM.Collect$$libinit$$00000011  c_w.l(libinit2.o)
-    0x0800016c   0x0800016c   0x00000000   Code   RO         2159    .ARM.Collect$$libinit$$00000013  c_w.l(libinit2.o)
-    0x0800016c   0x0800016c   0x00000000   Code   RO         2161    .ARM.Collect$$libinit$$00000015  c_w.l(libinit2.o)
-    0x0800016c   0x0800016c   0x00000000   Code   RO         2163    .ARM.Collect$$libinit$$00000017  c_w.l(libinit2.o)
-    0x0800016c   0x0800016c   0x00000000   Code   RO         2165    .ARM.Collect$$libinit$$00000019  c_w.l(libinit2.o)
-    0x0800016c   0x0800016c   0x00000000   Code   RO         2167    .ARM.Collect$$libinit$$0000001B  c_w.l(libinit2.o)
-    0x0800016c   0x0800016c   0x00000000   Code   RO         2169    .ARM.Collect$$libinit$$0000001D  c_w.l(libinit2.o)
-    0x0800016c   0x0800016c   0x00000000   Code   RO         2171    .ARM.Collect$$libinit$$0000001F  c_w.l(libinit2.o)
-    0x0800016c   0x0800016c   0x00000000   Code   RO         2173    .ARM.Collect$$libinit$$00000021  c_w.l(libinit2.o)
-    0x0800016c   0x0800016c   0x00000000   Code   RO         2175    .ARM.Collect$$libinit$$00000023  c_w.l(libinit2.o)
-    0x0800016c   0x0800016c   0x00000000   Code   RO         2177    .ARM.Collect$$libinit$$00000025  c_w.l(libinit2.o)
-    0x0800016c   0x0800016c   0x00000000   Code   RO         2181    .ARM.Collect$$libinit$$0000002C  c_w.l(libinit2.o)
-    0x0800016c   0x0800016c   0x00000000   Code   RO         2183    .ARM.Collect$$libinit$$0000002E  c_w.l(libinit2.o)
-    0x0800016c   0x0800016c   0x00000000   Code   RO         2185    .ARM.Collect$$libinit$$00000030  c_w.l(libinit2.o)
-    0x0800016c   0x0800016c   0x00000000   Code   RO         2187    .ARM.Collect$$libinit$$00000032  c_w.l(libinit2.o)
-    0x0800016c   0x0800016c   0x00000002   Code   RO         2188    .ARM.Collect$$libinit$$00000033  c_w.l(libinit2.o)
-    0x0800016e   0x0800016e   0x00000002   Code   RO         2208    .ARM.Collect$$libshutdown$$00000000  c_w.l(libshutdown.o)
-    0x08000170   0x08000170   0x00000000   Code   RO         2221    .ARM.Collect$$libshutdown$$00000002  c_w.l(libshutdown2.o)
-    0x08000170   0x08000170   0x00000000   Code   RO         2223    .ARM.Collect$$libshutdown$$00000004  c_w.l(libshutdown2.o)
-    0x08000170   0x08000170   0x00000000   Code   RO         2226    .ARM.Collect$$libshutdown$$00000007  c_w.l(libshutdown2.o)
-    0x08000170   0x08000170   0x00000000   Code   RO         2229    .ARM.Collect$$libshutdown$$0000000A  c_w.l(libshutdown2.o)
-    0x08000170   0x08000170   0x00000000   Code   RO         2231    .ARM.Collect$$libshutdown$$0000000C  c_w.l(libshutdown2.o)
-    0x08000170   0x08000170   0x00000000   Code   RO         2234    .ARM.Collect$$libshutdown$$0000000F  c_w.l(libshutdown2.o)
-    0x08000170   0x08000170   0x00000002   Code   RO         2235    .ARM.Collect$$libshutdown$$00000010  c_w.l(libshutdown2.o)
-    0x08000172   0x08000172   0x00000000   Code   RO         2102    .ARM.Collect$$rtentry$$00000000  c_w.l(__rtentry.o)
-    0x08000172   0x08000172   0x00000000   Code   RO         2113    .ARM.Collect$$rtentry$$00000002  c_w.l(__rtentry2.o)
-    0x08000172   0x08000172   0x00000006   Code   RO         2125    .ARM.Collect$$rtentry$$00000004  c_w.l(__rtentry4.o)
-    0x08000178   0x08000178   0x00000000   Code   RO         2115    .ARM.Collect$$rtentry$$00000009  c_w.l(__rtentry2.o)
-    0x08000178   0x08000178   0x00000004   Code   RO         2116    .ARM.Collect$$rtentry$$0000000A  c_w.l(__rtentry2.o)
-    0x0800017c   0x0800017c   0x00000000   Code   RO         2118    .ARM.Collect$$rtentry$$0000000C  c_w.l(__rtentry2.o)
-    0x0800017c   0x0800017c   0x00000008   Code   RO         2119    .ARM.Collect$$rtentry$$0000000D  c_w.l(__rtentry2.o)
-    0x08000184   0x08000184   0x00000002   Code   RO         2142    .ARM.Collect$$rtexit$$00000000  c_w.l(rtexit.o)
-    0x08000186   0x08000186   0x00000000   Code   RO         2190    .ARM.Collect$$rtexit$$00000002  c_w.l(rtexit2.o)
-    0x08000186   0x08000186   0x00000004   Code   RO         2191    .ARM.Collect$$rtexit$$00000003  c_w.l(rtexit2.o)
-    0x0800018a   0x0800018a   0x00000006   Code   RO         2192    .ARM.Collect$$rtexit$$00000004  c_w.l(rtexit2.o)
+    0x08000144   0x08000144   0x0000001c   Code   RO         2667    !!handler_zi        c_w.l(__scatter_zi.o)
+    0x08000160   0x08000160   0x00000000   Code   RO         2484    .ARM.Collect$$_printf_percent$$00000000  c_w.l(_printf_percent.o)
+    0x08000160   0x08000160   0x00000006   Code   RO         2483    .ARM.Collect$$_printf_percent$$00000009  c_w.l(_printf_d.o)
+    0x08000166   0x08000166   0x00000004   Code   RO         2506    .ARM.Collect$$_printf_percent$$00000017  c_w.l(_printf_percent_end.o)
+    0x0800016a   0x0800016a   0x00000002   Code   RO         2533    .ARM.Collect$$libinit$$00000000  c_w.l(libinit.o)
+    0x0800016c   0x0800016c   0x00000000   Code   RO         2540    .ARM.Collect$$libinit$$00000002  c_w.l(libinit2.o)
+    0x0800016c   0x0800016c   0x00000000   Code   RO         2542    .ARM.Collect$$libinit$$00000004  c_w.l(libinit2.o)
+    0x0800016c   0x0800016c   0x00000000   Code   RO         2545    .ARM.Collect$$libinit$$0000000A  c_w.l(libinit2.o)
+    0x0800016c   0x0800016c   0x00000000   Code   RO         2547    .ARM.Collect$$libinit$$0000000C  c_w.l(libinit2.o)
+    0x0800016c   0x0800016c   0x00000000   Code   RO         2549    .ARM.Collect$$libinit$$0000000E  c_w.l(libinit2.o)
+    0x0800016c   0x0800016c   0x00000000   Code   RO         2552    .ARM.Collect$$libinit$$00000011  c_w.l(libinit2.o)
+    0x0800016c   0x0800016c   0x00000000   Code   RO         2554    .ARM.Collect$$libinit$$00000013  c_w.l(libinit2.o)
+    0x0800016c   0x0800016c   0x00000000   Code   RO         2556    .ARM.Collect$$libinit$$00000015  c_w.l(libinit2.o)
+    0x0800016c   0x0800016c   0x00000000   Code   RO         2558    .ARM.Collect$$libinit$$00000017  c_w.l(libinit2.o)
+    0x0800016c   0x0800016c   0x00000000   Code   RO         2560    .ARM.Collect$$libinit$$00000019  c_w.l(libinit2.o)
+    0x0800016c   0x0800016c   0x00000000   Code   RO         2562    .ARM.Collect$$libinit$$0000001B  c_w.l(libinit2.o)
+    0x0800016c   0x0800016c   0x00000000   Code   RO         2564    .ARM.Collect$$libinit$$0000001D  c_w.l(libinit2.o)
+    0x0800016c   0x0800016c   0x00000000   Code   RO         2566    .ARM.Collect$$libinit$$0000001F  c_w.l(libinit2.o)
+    0x0800016c   0x0800016c   0x00000000   Code   RO         2568    .ARM.Collect$$libinit$$00000021  c_w.l(libinit2.o)
+    0x0800016c   0x0800016c   0x00000000   Code   RO         2570    .ARM.Collect$$libinit$$00000023  c_w.l(libinit2.o)
+    0x0800016c   0x0800016c   0x00000000   Code   RO         2572    .ARM.Collect$$libinit$$00000025  c_w.l(libinit2.o)
+    0x0800016c   0x0800016c   0x00000000   Code   RO         2576    .ARM.Collect$$libinit$$0000002C  c_w.l(libinit2.o)
+    0x0800016c   0x0800016c   0x00000000   Code   RO         2578    .ARM.Collect$$libinit$$0000002E  c_w.l(libinit2.o)
+    0x0800016c   0x0800016c   0x00000000   Code   RO         2580    .ARM.Collect$$libinit$$00000030  c_w.l(libinit2.o)
+    0x0800016c   0x0800016c   0x00000000   Code   RO         2582    .ARM.Collect$$libinit$$00000032  c_w.l(libinit2.o)
+    0x0800016c   0x0800016c   0x00000002   Code   RO         2583    .ARM.Collect$$libinit$$00000033  c_w.l(libinit2.o)
+    0x0800016e   0x0800016e   0x00000002   Code   RO         2603    .ARM.Collect$$libshutdown$$00000000  c_w.l(libshutdown.o)
+    0x08000170   0x08000170   0x00000000   Code   RO         2616    .ARM.Collect$$libshutdown$$00000002  c_w.l(libshutdown2.o)
+    0x08000170   0x08000170   0x00000000   Code   RO         2618    .ARM.Collect$$libshutdown$$00000004  c_w.l(libshutdown2.o)
+    0x08000170   0x08000170   0x00000000   Code   RO         2621    .ARM.Collect$$libshutdown$$00000007  c_w.l(libshutdown2.o)
+    0x08000170   0x08000170   0x00000000   Code   RO         2624    .ARM.Collect$$libshutdown$$0000000A  c_w.l(libshutdown2.o)
+    0x08000170   0x08000170   0x00000000   Code   RO         2626    .ARM.Collect$$libshutdown$$0000000C  c_w.l(libshutdown2.o)
+    0x08000170   0x08000170   0x00000000   Code   RO         2629    .ARM.Collect$$libshutdown$$0000000F  c_w.l(libshutdown2.o)
+    0x08000170   0x08000170   0x00000002   Code   RO         2630    .ARM.Collect$$libshutdown$$00000010  c_w.l(libshutdown2.o)
+    0x08000172   0x08000172   0x00000000   Code   RO         2497    .ARM.Collect$$rtentry$$00000000  c_w.l(__rtentry.o)
+    0x08000172   0x08000172   0x00000000   Code   RO         2508    .ARM.Collect$$rtentry$$00000002  c_w.l(__rtentry2.o)
+    0x08000172   0x08000172   0x00000006   Code   RO         2520    .ARM.Collect$$rtentry$$00000004  c_w.l(__rtentry4.o)
+    0x08000178   0x08000178   0x00000000   Code   RO         2510    .ARM.Collect$$rtentry$$00000009  c_w.l(__rtentry2.o)
+    0x08000178   0x08000178   0x00000004   Code   RO         2511    .ARM.Collect$$rtentry$$0000000A  c_w.l(__rtentry2.o)
+    0x0800017c   0x0800017c   0x00000000   Code   RO         2513    .ARM.Collect$$rtentry$$0000000C  c_w.l(__rtentry2.o)
+    0x0800017c   0x0800017c   0x00000008   Code   RO         2514    .ARM.Collect$$rtentry$$0000000D  c_w.l(__rtentry2.o)
+    0x08000184   0x08000184   0x00000002   Code   RO         2537    .ARM.Collect$$rtexit$$00000000  c_w.l(rtexit.o)
+    0x08000186   0x08000186   0x00000000   Code   RO         2585    .ARM.Collect$$rtexit$$00000002  c_w.l(rtexit2.o)
+    0x08000186   0x08000186   0x00000004   Code   RO         2586    .ARM.Collect$$rtexit$$00000003  c_w.l(rtexit2.o)
+    0x0800018a   0x0800018a   0x00000006   Code   RO         2587    .ARM.Collect$$rtexit$$00000004  c_w.l(rtexit2.o)
     0x08000190   0x08000190   0x00000040   Code   RO            4    .text               startup_stm32f103xb.o
-    0x080001d0   0x080001d0   0x00000026   Code   RO         2058    .text               c_w.l(llushr.o)
+    0x080001d0   0x080001d0   0x00000026   Code   RO         2453    .text               c_w.l(llushr.o)
     0x080001f6   0x080001f6   0x00000002   PAD
-    0x080001f8   0x080001f8   0x00000034   Code   RO         2062    .text               c_w.l(noretval__2snprintf.o)
-    0x0800022c   0x0800022c   0x00000068   Code   RO         2064    .text               c_w.l(__printf.o)
-    0x08000294   0x08000294   0x00000078   Code   RO         2066    .text               c_w.l(_printf_dec.o)
-    0x0800030c   0x0800030c   0x0000003e   Code   RO         2090    .text               c_w.l(strlen.o)
-    0x0800034a   0x0800034a   0x0000008a   Code   RO         2092    .text               c_w.l(rt_memcpy_v6.o)
-    0x080003d4   0x080003d4   0x00000064   Code   RO         2094    .text               c_w.l(rt_memcpy_w.o)
-    0x08000438   0x08000438   0x0000004e   Code   RO         2096    .text               c_w.l(rt_memclr_w.o)
-    0x08000486   0x08000486   0x00000006   Code   RO         2098    .text               c_w.l(heapauxi.o)
-    0x0800048c   0x0800048c   0x000000b2   Code   RO         2103    .text               c_w.l(_printf_intcommon.o)
+    0x080001f8   0x080001f8   0x00000034   Code   RO         2457    .text               c_w.l(noretval__2snprintf.o)
+    0x0800022c   0x0800022c   0x00000068   Code   RO         2459    .text               c_w.l(__printf.o)
+    0x08000294   0x08000294   0x00000078   Code   RO         2461    .text               c_w.l(_printf_dec.o)
+    0x0800030c   0x0800030c   0x0000003e   Code   RO         2485    .text               c_w.l(strlen.o)
+    0x0800034a   0x0800034a   0x0000008a   Code   RO         2487    .text               c_w.l(rt_memcpy_v6.o)
+    0x080003d4   0x080003d4   0x00000064   Code   RO         2489    .text               c_w.l(rt_memcpy_w.o)
+    0x08000438   0x08000438   0x0000004e   Code   RO         2491    .text               c_w.l(rt_memclr_w.o)
+    0x08000486   0x08000486   0x00000006   Code   RO         2493    .text               c_w.l(heapauxi.o)
+    0x0800048c   0x0800048c   0x000000b2   Code   RO         2498    .text               c_w.l(_printf_intcommon.o)
     0x0800053e   0x0800053e   0x00000002   PAD
-    0x08000540   0x08000540   0x00000030   Code   RO         2105    .text               c_w.l(_printf_char_common.o)
-    0x08000570   0x08000570   0x0000000a   Code   RO         2107    .text               c_w.l(_sputc.o)
-    0x0800057a   0x0800057a   0x00000010   Code   RO         2109    .text               c_w.l(_snputc.o)
-    0x0800058a   0x0800058a   0x0000004a   Code   RO         2129    .text               c_w.l(sys_stackheap_outer.o)
-    0x080005d4   0x080005d4   0x00000012   Code   RO         2131    .text               c_w.l(exit.o)
+    0x08000540   0x08000540   0x00000030   Code   RO         2500    .text               c_w.l(_printf_char_common.o)
+    0x08000570   0x08000570   0x0000000a   Code   RO         2502    .text               c_w.l(_sputc.o)
+    0x0800057a   0x0800057a   0x00000010   Code   RO         2504    .text               c_w.l(_snputc.o)
+    0x0800058a   0x0800058a   0x0000004a   Code   RO         2524    .text               c_w.l(sys_stackheap_outer.o)
+    0x080005d4   0x080005d4   0x00000012   Code   RO         2526    .text               c_w.l(exit.o)
     0x080005e6   0x080005e6   0x00000002   PAD
-    0x080005e8   0x080005e8   0x00000008   Code   RO         2139    .text               c_w.l(libspace.o)
-    0x080005f0   0x080005f0   0x0000000c   Code   RO         2200    .text               c_w.l(sys_exit.o)
-    0x080005fc   0x080005fc   0x00000002   Code   RO         2211    .text               c_w.l(use_no_semi.o)
-    0x080005fe   0x080005fe   0x00000000   Code   RO         2213    .text               c_w.l(indicate_semi.o)
+    0x080005e8   0x080005e8   0x00000008   Code   RO         2534    .text               c_w.l(libspace.o)
+    0x080005f0   0x080005f0   0x0000000c   Code   RO         2595    .text               c_w.l(sys_exit.o)
+    0x080005fc   0x080005fc   0x00000002   Code   RO         2606    .text               c_w.l(use_no_semi.o)
+    0x080005fe   0x080005fe   0x00000000   Code   RO         2608    .text               c_w.l(indicate_semi.o)
     0x080005fe   0x080005fe   0x00000002   PAD
     0x08000600   0x08000600   0x0000002c   Code   RO         1810    i.Bootloader_CalculateCRC32  bootloader.o
     0x0800062c   0x0800062c   0x0000003c   Code   RO         1811    i.Bootloader_CheckAppValid  bootloader.o
@@ -1433,7 +1593,7 @@ Memory Map of the image
     0x08002964   0x08002964   0x00000400   Data   RO         1836    .constdata          bootloader.o
     0x08002d64   0x08002d64   0x00000041   Data   RO           16    .conststring        main.o
     0x08002da5   0x08002da5   0x00000003   PAD
-    0x08002da8   0x08002da8   0x00000020   Data   RO         2266    Region$$Table       anon$$obj.o
+    0x08002da8   0x08002da8   0x00000020   Data   RO         2661    Region$$Table       anon$$obj.o
 
 
     Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08002dc8, Size: 0x00000ef8, Max: 0x00001000, ABSOLUTE)
@@ -1450,7 +1610,7 @@ Memory Map of the image
     0x20000020        -       0x00000048   Zero   RW          182    .bss                usart.o
     0x20000068        -       0x00000020   Zero   RW         1506    .bss                stm32f1xx_hal_flash.o
     0x20000088        -       0x00000810   Zero   RW         1999    .bss                bootloader_uart.o
-    0x20000898        -       0x00000060   Zero   RW         2140    .bss                c_w.l(libspace.o)
+    0x20000898        -       0x00000060   Zero   RW         2535    .bss                c_w.l(libspace.o)
     0x200008f8        -       0x00000200   Zero   RW            2    HEAP                startup_stm32f103xb.o
     0x20000af8        -       0x00000400   Zero   RW            1    STACK               startup_stm32f103xb.o
 
