@@ -144,32 +144,23 @@ int main(void)
   }
   */
   
-  /* 方式4: 超时�?�? - 等待串口命令 */
+  /* 方式4: 超时等待 - 等待firmware命令 */
   if (!enter_iap)
   {
       Bootloader_UART_SendString("\r\n");
       Bootloader_UART_SendString("Wait Firmware, or wait to run APP...\r\n");
       Bootloader_UART_SendString("Waiting ");
       
-      /* 等待10秒，是否收到升级命令 */
+      /* 等待10秒，等待是否收到升级命令 */
       uint32_t wait_time = 10000;  /* 等待时间（毫秒）*/
       uint32_t start_tick = HAL_GetTick();
       
       while ((HAL_GetTick() - start_tick) < wait_time)
       {
-          /* �?500ms打印�?个点 */
-          static uint32_t last_dot = 0;
-          if (HAL_GetTick() - last_dot > 500)
-          {
-              Bootloader_UART_SendString(".");
-              last_dot = HAL_GetTick();
-          }
-          /*判断串口接收缓存中是否有数据 有数据 开启固件升级*/
-          if(with_data_rxbuff()){
-              enter_iap = 1;
-              break;
-          }
-          HAL_Delay(10);
+          /*阻塞等待开启固件升级命令*/
+          wifi_uart_service();
+          if(enter_iap) break;
+          ///HAL_Delay(10);
       }
   }
   
@@ -247,7 +238,6 @@ int main(void)
      */
 
     wifi_uart_service();
-    
     //Bootloader_UART_Process();
     
     /* LED闪烁指示Bootloader运行状�?�（可�?�） */

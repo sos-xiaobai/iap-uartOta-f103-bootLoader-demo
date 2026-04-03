@@ -21,6 +21,7 @@
 
 #include "protocol.h"
 #include "wifi.h"
+#include "bootloader.h"
 
 extern const DOWNLOAD_CMD_S download_cmd[];
 
@@ -540,8 +541,8 @@ void data_handle(u16 offset) {
 
             upgrade_package_choose(PACKAGE_SIZE);
             firm_update_flag = UPDATE_START_CMD;
-
-             // 固件升级开始处理,修改flash标志位
+            enter_iap = 1; // 进入IAP升级模式标志位 表示要开始固件升级了
+            // 固件升级开始处理,修改flash标志位
             IAP_StartUpdate();
 
             break;
@@ -567,11 +568,18 @@ void data_handle(u16 offset) {
                 if ((total_len == 4) && (dp_len == firm_length))
                 {
                     // 最后一包 不包含数据 仅包含升级包长度 用于校验升级包完整性和正确性
+                    mcu_firm_update_handle(firmware_addr, dp_len, 0);
                     firm_update_flag = 0;
-                    if (mcu_firm_update_handle(firmware_addr, dp_len, 0) == SUCCESS)
+                    enter_iap = 0;
+                    /* 结束升级 */
+                    IAP_StatusTypeDef status = IAP_EndUpdate(); // 固件升级结束 校验程序是否正确 修改flash标志位
+                    /* 升级成功后延迟复位，让响应数据发送完成 */
+                    if (status == IAP_SUCCESS)
                     {
                         wifi_uart_write_frame(UPDATE_TRANS_CMD, MCU_TX_VER, 0);
-                    }
+                        HAL_Delay(200);  /* 等待响应发送完成 */
+                        NVIC_SystemReset();  /* 系统复位，重新启动 */
+                    } 
                 }
                 else if ((total_len - 4) <= firm_size)
                 {
