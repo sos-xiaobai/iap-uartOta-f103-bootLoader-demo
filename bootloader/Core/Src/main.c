@@ -151,6 +151,7 @@ int main(void)
       Bootloader_UART_SendString("Wait Firmware, or wait to run APP...\r\n");
       Bootloader_UART_SendString("Waiting ");
       
+      
       /* 等待10秒，等待是否收到升级命令 */
       uint32_t wait_time = 10000;  /* 等待时间（毫秒）*/
       uint32_t start_tick = HAL_GetTick();
@@ -160,8 +161,17 @@ int main(void)
           /*阻塞等待开启固件升级命令*/
           wifi_uart_service();
           if(enter_iap) break;
+
+          /* 每秒打印一个点，指示等待状态 */
+          static uint32_t last_dot = 0;
+          if (HAL_GetTick() - last_dot > 1000)
+          {
+              Bootloader_UART_SendString(".");
+              last_dot = HAL_GetTick();
+          }
           ///HAL_Delay(10);
       }
+      Bootloader_UART_SendString("\r\n");
   }
   
   /* ========== 根据标志决定是进入IAP还是跳转APP ========== */

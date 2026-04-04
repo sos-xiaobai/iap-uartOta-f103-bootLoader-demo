@@ -271,6 +271,7 @@ IAP_StatusTypeDef Bootloader_Flash_Erase(uint32_t start_addr, uint32_t size)
   */
 IAP_StatusTypeDef Bootloader_Flash_Write(uint32_t addr, uint8_t *data, uint32_t len)
 {
+    extern UART_HandleTypeDef huart1;  // 使用USART1进行调试输出
     HAL_StatusTypeDef status;
     uint32_t i;
     uint32_t word_data;
@@ -289,7 +290,7 @@ IAP_StatusTypeDef Bootloader_Flash_Write(uint32_t addr, uint8_t *data, uint32_t 
     {
         return IAP_INVALID_PARAM;
     }
-    
+
     /* 解锁Flash */
     status = HAL_FLASH_Unlock();
     if (status != HAL_OK)

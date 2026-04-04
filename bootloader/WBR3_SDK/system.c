@@ -539,16 +539,19 @@ void data_handle(u16 offset) {
             firm_length <<= 8;
             firm_length |= wifi_data_process_buf[offset + DATA_START + 3];
 
-            upgrade_package_choose(PACKAGE_SIZE);
             firm_update_flag = UPDATE_START_CMD;
+			extern uint8_t enter_iap;
             enter_iap = 1; // 进入IAP升级模式标志位 表示要开始固件升级了
+            /*必须先擦除flash再执行串口回复包 flash擦除过程中无法取指执行代码，包括中断，因此先擦除flash再回复，确保时序不中断*/
             // 固件升级开始处理,修改flash标志位
             IAP_StartUpdate();
-
+            // 回复包
+            upgrade_package_choose(PACKAGE_SIZE);
             break;
 
         case UPDATE_TRANS_CMD:  // 升级传输
             if (firm_update_flag == UPDATE_START_CMD) {
+                
                 // 停止一切数据上报
                 stop_update_flag = ENABLE;
 

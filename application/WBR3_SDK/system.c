@@ -520,62 +520,15 @@ void data_handle(u16 offset) {
 
 #ifdef SUPPORT_MCU_FIRM_UPDATE
         case UPDATE_START_CMD:  // 升级开始
-            // 获取升级包大小全局变量
-            firm_flag = PACKAGE_SIZE;
-            if (firm_flag == 0) {
-                firm_size = 256;
-            } else if (firm_flag == 1) {
-                firm_size = 512;
-            } else if (firm_flag == 2) {
-                firm_size = 1024;
-            }
+            // app收到ota升级命令 直接重启 跳转到boot处理
+            __disable_irq();          // 关闭中断
+            HAL_NVIC_SystemReset();   // 触发复位
 
-            firm_length = wifi_data_process_buf[offset + DATA_START];
-            firm_length <<= 8;
-            firm_length |= wifi_data_process_buf[offset + DATA_START + 1];
-            firm_length <<= 8;
-            firm_length |= wifi_data_process_buf[offset + DATA_START + 2];
-            firm_length <<= 8;
-            firm_length |= wifi_data_process_buf[offset + DATA_START + 3];
-
-            upgrade_package_choose(PACKAGE_SIZE);
-            firm_update_flag = UPDATE_START_CMD;
-            break;
+        break;
 
         case UPDATE_TRANS_CMD:  // 升级传输
             if (firm_update_flag == UPDATE_START_CMD) {
-                // 停止一切数据上报
-                stop_update_flag = ENABLE;
-
-                total_len = (wifi_data_process_buf[offset + LENGTH_HIGH] << 8) | wifi_data_process_buf[offset + LENGTH_LOW];
-
-                dp_len = wifi_data_process_buf[offset + DATA_START];
-                dp_len <<= 8;
-                dp_len |= wifi_data_process_buf[offset + DATA_START + 1];
-                dp_len <<= 8;
-                dp_len |= wifi_data_process_buf[offset + DATA_START + 2];
-                dp_len <<= 8;
-                dp_len |= wifi_data_process_buf[offset + DATA_START + 3];
-
-                firmware_addr = (u8 *)wifi_data_process_buf;
-                firmware_addr += (offset + DATA_START + 4);
-
-                if ((total_len == 4) && (dp_len == firm_length)) {
-                    // 最后一包
-                    ret = mcu_firm_update_handle(firmware_addr, dp_len, 0);
-                    firm_update_flag = 0;
-                } else if ((total_len - 4) <= firm_size) {
-                    ret = mcu_firm_update_handle(firmware_addr, dp_len, total_len - 4);
-                } else {
-                    firm_update_flag = 0;
-                    ret = ERROR;
-                }
-
-                if (ret == SUCCESS) {
-                    wifi_uart_write_frame(UPDATE_TRANS_CMD, MCU_TX_VER, 0);
-                }
-                // 恢复一切数据上报
-                stop_update_flag = DISABLE;
+                // app对于升级包不做操作
             }
             break;
 #endif
