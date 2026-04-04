@@ -430,6 +430,9 @@ void data_handle(u16 offset) {
     static u16 firm_size;            // 升级包一包的大小
     static u32 firm_length;          // MCU升级文件长度
     static u8 firm_update_flag = 0;  // MCU升级标志
+    static u32 firm_package_offset = 0;   // 升级包目标偏移地址
+    static u32 firm_package_next_index = 0;   // 下一升级包目标地址
+    static u16 firm_package_length = 0; // 接收升级包的长度
     u32 dp_len;
     u8 firm_flag;  // 升级包大小标志
 #else
@@ -542,6 +545,7 @@ void data_handle(u16 offset) {
             firm_update_flag = UPDATE_START_CMD;
 			extern uint8_t enter_iap;
             enter_iap = 1; // 进入IAP升级模式标志位 表示要开始固件升级了
+            firm_package_next_index = 0; // 下一包的偏移地址初始化为0
             /*必须先擦除flash再执行串口回复包 flash擦除过程中无法取指执行代码，包括中断，因此先擦除flash再回复，确保时序不中断*/
             // 固件升级开始处理,修改flash标志位
             IAP_StartUpdate();
@@ -565,8 +569,21 @@ void data_handle(u16 offset) {
                 dp_len <<= 8;
                 dp_len |= wifi_data_process_buf[offset + DATA_START + 3];
 
+                firm_package_offset = dp_len; // 升级包目标偏移地址
+
+                firm_package_length = total_len - 4; // 升级包数据长度
+
                 firmware_addr = (u8 *)wifi_data_process_buf;
-                firmware_addr += (offset + DATA_START + 4);
+                firmware_addr += (offset + DATA_START + 4);   // 升级包暂存数据缓冲区地址
+
+                /*根据包偏移来校验是否漏包了*/
+                if(firm_package_next_index != dp_len) {
+                    // 漏包了直接退出  不回复 触发重发机制
+                    stop_update_flag = DISABLE;
+                    break;
+                }
+                // 计算下一包的偏移地址 用于校验下一包是否漏包了
+                firm_package_next_index = dp_len + firm_package_length;
 
                 if ((total_len == 4) && (dp_len == firm_length))
                 {
@@ -574,6 +591,7 @@ void data_handle(u16 offset) {
                     mcu_firm_update_handle(firmware_addr, dp_len, 0);
                     firm_update_flag = 0;
                     enter_iap = 0;
+                    firm_package_next_index = 0;
                     /* 结束升级 */
                     IAP_StatusTypeDef status = IAP_EndUpdate(); // 固件升级结束 校验程序是否正确 修改flash标志位
                     /* 升级成功后延迟复位，让响应数据发送完成 */
@@ -584,10 +602,10 @@ void data_handle(u16 offset) {
                         NVIC_SystemReset();  /* 系统复位，重新启动 */
                     } 
                 }
-                else if ((total_len - 4) <= firm_size)
+                else if ((firm_package_length) <= firm_size)
                 {
                     // 升级包数据
-                    if (mcu_firm_update_handle(firmware_addr, dp_len, total_len - 4) == SUCCESS)
+                    if (mcu_firm_update_handle(firmware_addr, dp_len, firm_package_length) == SUCCESS)
                     {
                         wifi_uart_write_frame(UPDATE_TRANS_CMD, MCU_TX_VER, 0);
                     };
