@@ -179,8 +179,9 @@ void all_data_update(void){
     //此代码为平台自动生成，请按照实际数据修改每个可下发可上报函数和只上报函数
     mcu_dp_value_update(DPID_ANGLE,当前modulating); //VALUE型数据上报;
     mcu_dp_value_update(DPID_ANGLEDIS,当前realtime open value); //VALUE型数据上报;
-
     */
+
+
 }
 
 /******************************************************************************
