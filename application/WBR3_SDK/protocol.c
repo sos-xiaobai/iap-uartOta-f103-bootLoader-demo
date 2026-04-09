@@ -179,7 +179,7 @@ void all_data_update(void){
     //此代码为平台自动生成，请按照实际数据修改每个可下发可上报函数和只上报函数
     // 目前没有实现逻辑 仅做示例，后续会根据实际情况完善
     mcu_dp_value_update(DPID_ANGLE,30); //VALUE型数据上报 数值范围: 0-90, 间距: 1, 倍数: 0, 单位: °;
-    mcu_dp_value_update(DPID_ANGLEDIS,60); //VALUE型数据上报数值范围: 0-90, 间距: 1, 倍数: 0, 单位:;
+    mcu_dp_value_update(DPID_ANGLEDIS,11); //VALUE型数据上报数值范围: 0-90, 间距: 1, 倍数: 0, 单位:;
     
 }
 

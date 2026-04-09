@@ -203,6 +203,7 @@ void Bootloader_ResetDevice(void);
 const char* Bootloader_GetStatusString(IAP_StatusTypeDef status);
 
 /* 固件版本管理 */
+IAP_StatusTypeDef Bootloader_UpdateAppVersion(void);
 IAP_StatusTypeDef Bootloader_SaveAppVersion(Firmware_VersionTypeDef *version);
 IAP_StatusTypeDef Bootloader_ReadAppVersion(Firmware_VersionTypeDef *version);
 uint8_t Bootloader_IsAppVersionValid(void);

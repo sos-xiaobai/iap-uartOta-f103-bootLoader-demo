@@ -16,6 +16,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "bootloader.h"
+#include "protocol.h"
 #include "main.h"
 
 /* Private typedef -----------------------------------------------------------*/
@@ -798,6 +799,120 @@ void Bootloader_EraseAppVersion(void)
     
     /* 锁定Flash */
     HAL_FLASH_Lock();
+}
+
+/*
+ * @brief  解析MCU版本字符串
+ * @param  ver_str: 版本字符串
+ * @param  major: 主版本号
+ * @param  minor: 次版本号
+ * @param  patch: 修订号
+ * @retval 0: 成功, -1: 失败
+ */
+int Bootloader_ParseMCUVer(const char *ver_str, uint8_t *major, uint8_t *minor, uint16_t *patch)
+{
+    int m1 = 0, m2 = 0, m3 = 0;
+    const char *p = ver_str;
+    char c;
+
+    if (!ver_str || !major || !minor || !patch) return -1;
+
+    // 解析第一个数字
+    while ((c = *p) && c >= '0' && c <= '9') {
+        m1 = m1 * 10 + (c - '0');
+        p++;
+    }
+    if (*p != '.') return -1;
+    p++;
+
+    // 解析第二个数字
+    while ((c = *p) && c >= '0' && c <= '9') {
+        m2 = m2 * 10 + (c - '0');
+        p++;
+    }
+    if (*p != '.') return -1;
+    p++;
+
+    // 解析第三个数字
+    while ((c = *p) && c >= '0' && c <= '9') {
+        m3 = m3 * 10 + (c - '0');
+        p++;
+    }
+    if (*p != '\0') return -1;
+
+    // 范围检查
+    if (m1 < 0 || m1 > 99 || m2 < 0 || m2 > 99 || m3 < 0 || m3 > 99)
+        return -1;
+
+    *major = (uint8_t)m1;
+    *minor = (uint8_t)m2;
+    *patch = (uint16_t)m3;
+    return 0;
+}
+
+/**
+ * @brief  生成版本字符串 "x.x.x"
+ * @param  major: 主版本号（0~99）
+ * @param  minor: 次版本号（0~99）
+ * @param  patch: 修订号（0~99）
+ * @param  out_str: 输出字符串缓冲区，至少8字节
+ * @retval 0成功，-1失败
+ */
+int Bootloader_MCUVerString(uint8_t major, uint8_t minor, uint8_t patch, char *out_str)
+{
+    if (!out_str) return -1;
+    if (major > 99 || minor > 99 || patch > 99) return -1;
+
+    // 手动实现itoa，兼容无sprintf环境
+    out_str[0] = (major / 10) + '0';
+    out_str[1] = (major % 10) + '0';
+    out_str[2] = '.';
+    out_str[3] = (minor / 10) + '0';
+    out_str[4] = (minor % 10) + '0';
+    out_str[5] = '.';
+    out_str[6] = (patch / 10) + '0';
+    out_str[7] = (patch % 10) + '0';
+    out_str[8] = '\0';
+
+    // 去除前导0（如01.02.03变成1.2.3）
+    // 可选：如需保留两位数，注释掉下面这段
+    int i = 0, j = 0;
+    while (out_str[i] == '0' && i < 2) i++;
+    if (i) { out_str[j++] = out_str[i++]; }
+    else { out_str[j++] = out_str[0]; }
+    out_str[j++] = '.';
+    i = 3;
+    if (out_str[i] == '0') i++;
+    out_str[j++] = out_str[i++];
+    out_str[j++] = '.';
+    i = 6;
+    if (out_str[i] == '0') i++;
+    out_str[j++] = out_str[i++];
+    out_str[j] = '\0';
+
+    return 0;
+}
+
+
+/**
+  * @brief  更新flash中的APP固件版本信息 只能在app程序中调用！！！
+  * @retval None
+  */
+IAP_StatusTypeDef Bootloader_UpdateAppVersion(void)
+{
+    /* 读取flash中的版本信息 */
+    Firmware_VersionTypeDef current_version;
+    Bootloader_ReadAppVersion(&current_version);
+    /* 从MCU_VER宏获取当前版本信息*/
+    Firmware_VersionTypeDef new_version;
+    Bootloader_ParseMCUVer(MCU_VER, &new_version.major, &new_version.minor, &new_version.patch);
+    /*对比版本号*/
+    if(Bootloader_CompareVersion(&new_version, &current_version) != 0)  //版本号不同，更新flash中的版本信息
+    {
+        /* 更新版本信息 */
+        return Bootloader_SaveAppVersion(&new_version);
+    }
+    return IAP_SUCCESS;
 }
 
 /* Private functions ---------------------------------------------------------*/

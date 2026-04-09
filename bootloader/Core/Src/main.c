@@ -107,26 +107,26 @@ int main(void)
   wifi_protocol_init(); 
 
   /* 发�?�启动信�? */
-  Bootloader_UART_SendString("\r\n");
-  Bootloader_UART_SendString("====================================\r\n");
-  Bootloader_UART_SendString("  STM32 IAP Bootloader v1.0.0\r\n");
-  Bootloader_UART_SendString("  MCU: STM32F103C8\r\n");
-  Bootloader_UART_SendString("====================================\r\n");
+  // Bootloader_UART_SendString("\r\n");
+  // Bootloader_UART_SendString("====================================\r\n");
+  // Bootloader_UART_SendString("  STM32 IAP Bootloader v1.0.0\r\n");
+  // Bootloader_UART_SendString("  MCU: STM32F103C8\r\n");
+  // Bootloader_UART_SendString("====================================\r\n");
   
   /* ========== 判断是否进入IAP升级模式 ========== */
   //uint8_t enter_iap = 0;  /* 进入IAP模式标志 */
   /* 方式1: �?查是否有未完成的升级标志 */
   if (Bootloader_CheckUpdateFlag())
   {
-      Bootloader_UART_SendString("WARNING: Last update incomplete!\r\n");
-      Bootloader_ClearUpdateFlag();
+      //Bootloader_UART_SendString("WARNING: Last update incomplete!\r\n");
+      //Bootloader_ClearUpdateFlag();
       enter_iap = 1;
   }
   
   /* 方式2: �?查APP是否有效 */
   if (!enter_iap && !Bootloader_CheckAppValid())
   {
-      Bootloader_UART_SendString("Application invalid!\r\n");
+      //Bootloader_UART_SendString("Application invalid!\r\n");
       enter_iap = 1;
   }
   
@@ -147,9 +147,9 @@ int main(void)
   /* 方式4: 超时等待 - 等待firmware命令 */
   if (!enter_iap)
   {
-      Bootloader_UART_SendString("\r\n");
-      Bootloader_UART_SendString("Wait Firmware, or wait to run APP...\r\n");
-      Bootloader_UART_SendString("Waiting ");
+      // Bootloader_UART_SendString("\r\n");
+      // Bootloader_UART_SendString("Wait Firmware, or wait to run APP...\r\n");
+      // Bootloader_UART_SendString("Waiting ");
       
       
       /* 等待10秒，等待是否收到升级命令 */
@@ -166,24 +166,24 @@ int main(void)
           static uint32_t last_dot = 0;
           if (HAL_GetTick() - last_dot > 1000)
           {
-              Bootloader_UART_SendString(".");
+              //Bootloader_UART_SendString(".");
               last_dot = HAL_GetTick();
           }
           ///HAL_Delay(10);
       }
-      Bootloader_UART_SendString("\r\n");
+      //Bootloader_UART_SendString("\r\n");
   }
   
   /* ========== 根据标志决定是进入IAP还是跳转APP ========== */
   if (enter_iap)
   {
       /* 进入IAP升级模式 */
-      Bootloader_UART_SendString("\r\n");
-      Bootloader_UART_SendString("==================================================\r\n");
-      Bootloader_UART_SendString("  Entering IAP Mode\r\n");
-      Bootloader_UART_SendString("==================================================\r\n");
-      Bootloader_UART_SendString("Waiting for firmware...\r\n");
-      Bootloader_UART_SendString("\r\n");
+      // Bootloader_UART_SendString("\r\n");
+      // Bootloader_UART_SendString("==================================================\r\n");
+      // Bootloader_UART_SendString("  Entering IAP Mode\r\n");
+      // Bootloader_UART_SendString("==================================================\r\n");
+      // Bootloader_UART_SendString("Waiting for firmware...\r\n");
+      // Bootloader_UART_SendString("\r\n");
   }
   else
   {
@@ -200,32 +200,32 @@ int main(void)
                   snprintf(version_str, sizeof(version_str), 
                           "APP Version: %d.%d.%d\r\n", 
                           app_version.major, app_version.minor, app_version.patch);
-                  Bootloader_UART_SendString(version_str);
+                  //Bootloader_UART_SendString(version_str);
                   
                   if (app_version.description[0] != '\0')
                   {
-                      Bootloader_UART_SendString("Description: ");
-                      Bootloader_UART_SendString(app_version.description);
-                      Bootloader_UART_SendString("\r\n");
+                      //Bootloader_UART_SendString("Description: ");
+                      //Bootloader_UART_SendString(app_version.description);
+                      //Bootloader_UART_SendString("\r\n");
                   }
               }
           }
           
-          Bootloader_UART_SendString("Jumping to application...\r\n");
+          //Bootloader_UART_SendString("Jumping to application...\r\n");
           HAL_Delay(100);
           Bootloader_JumpToApp();
           
           /* 如果跳转失败，会继续执行到这�? */
-          Bootloader_UART_SendString("ERROR: Jump to application failed!\r\n");
+          //Bootloader_UART_SendString("ERROR: Jump to application failed!\r\n");
       }
       else
       {
           /* 理论上不会到这里，因为前面已经检查过�? */
-          Bootloader_UART_SendString("ERROR: Application invalid!\r\n");
+          //Bootloader_UART_SendString("ERROR: Application invalid!\r\n");
       }
       
       /* 跳转失败，进入IAP模式 */
-      Bootloader_UART_SendString("Enter IAP mode...\r\n");
+      //Bootloader_UART_SendString("Enter IAP mode...\r\n");
   }
   /* USER CODE END 2 */
 

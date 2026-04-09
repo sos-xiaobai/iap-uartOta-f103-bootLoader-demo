@@ -138,16 +138,26 @@ static void heat_beat_check(void) {
  * @param  Null
  * @return Null
  */
-static void product_info_update(void) {
+void product_info_update(void) {
     u8 length = 0;
     char str[10] = {0};
 
     TUYA_UNUSED( str[0]);
 
+    // 添加读取flash区域产品信息 保留持续数据 
+    /* 读取flash中的版本信息 */
+    Firmware_VersionTypeDef current_version;
+    Bootloader_ReadAppVersion(&current_version);
+    // 确保版本号不为0，防止误判为未初始化
+    if(current_version.major == 0){
+        current_version.major = 1;
+    }
+    Bootloader_MCUVerString(current_version.major, current_version.minor, current_version.patch, str);
+
     length = set_wifi_uart_buffer(length, (u8 *)"{\"p\":\"", tuya_strlen("{\"p\":\""));
     length = set_wifi_uart_buffer(length, (u8 *)PRODUCT_KEY, tuya_strlen(PRODUCT_KEY));
     length = set_wifi_uart_buffer(length, (u8 *)"\",\"v\":\"", tuya_strlen("\",\"v\":\""));
-    length = set_wifi_uart_buffer(length, (u8 *)MCU_VER, tuya_strlen(MCU_VER));
+    length = set_wifi_uart_buffer(length, (u8 *)str, tuya_strlen(str));
     length = set_wifi_uart_buffer(length, (u8 *)"\",\"m\":", tuya_strlen("\",\"m\":"));
     length = set_wifi_uart_buffer(length, (u8 *)CONFIG_MODE, tuya_strlen(CONFIG_MODE));
 #ifdef CONFIG_MODE_DELAY_TIME
@@ -430,7 +440,6 @@ void data_handle(u16 offset) {
     static u16 firm_size;            // 升级包一包的大小
     static u32 firm_length;          // MCU升级文件长度
     static u8 firm_update_flag = 0;  // MCU升级标志
-    static u32 firm_package_offset = 0;   // 升级包目标偏移地址
     static u32 firm_package_next_index = 0;   // 下一升级包目标地址
     static u16 firm_package_length = 0; // 接收升级包的长度
     u32 dp_len;
@@ -466,9 +475,9 @@ void data_handle(u16 offset) {
     TUYA_UNUSED(data_bytes);
 
     switch (cmd_type) {
-        case HEAT_BEAT_CMD:  // 心跳包
-            heat_beat_check();
-            break;
+         case HEAT_BEAT_CMD:  // 心跳包
+             heat_beat_check();
+             break;
 
         case PRODUCT_INFO_CMD:  // 产品信息
             product_info_update();
@@ -569,8 +578,6 @@ void data_handle(u16 offset) {
                 dp_len <<= 8;
                 dp_len |= wifi_data_process_buf[offset + DATA_START + 3];
 
-                firm_package_offset = dp_len; // 升级包目标偏移地址
-
                 firm_package_length = total_len - 4; // 升级包数据长度
 
                 firmware_addr = (u8 *)wifi_data_process_buf;
@@ -599,7 +606,8 @@ void data_handle(u16 offset) {
                     {
                         wifi_uart_write_frame(UPDATE_TRANS_CMD, MCU_TX_VER, 0);
                         HAL_Delay(200);  /* 等待响应发送完成 */
-                        NVIC_SystemReset();  /* 系统复位，重新启动 */
+                        Bootloader_JumpToApp(); /*直接跳转到app启动*/
+                        // NVIC_SystemReset();  /* 系统复位，重新启动 */
                     } 
                 }
                 else if ((firm_package_length) <= firm_size)

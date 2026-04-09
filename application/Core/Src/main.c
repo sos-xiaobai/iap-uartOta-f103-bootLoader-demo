@@ -105,11 +105,14 @@ int main(void)
   /* 初始化串口IAP协议 */
   Bootloader_UART_Init(&huart1);
 	
-	Bootloader_UART_SendString("  STM32 Application enter successfull!\r\n");
+	//Bootloader_UART_SendString("  STM32 Application enter successfull!\r\n");
 
   /* 初始化wifi协议,必须在MCU初始化代码中调用该函数 */
   wifi_protocol_init();  
-
+  // 产品信息 确保在上一次ota结束重启后，bootloader能回复模块当前的产品信息，防止误判为ota超时
+  Bootloader_UpdateAppVersion();
+  extern void product_info_update();
+  product_info_update();
   /* USER CODE END 2 */
 
   /* Infinite loop */

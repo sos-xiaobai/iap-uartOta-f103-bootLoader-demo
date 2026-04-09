@@ -137,7 +137,7 @@ static void heat_beat_check(void) {
  * @param  Null
  * @return Null
  */
-static void product_info_update(void) {
+void product_info_update(void) {
     u8 length = 0;
     char str[10] = {0};
 
@@ -425,12 +425,8 @@ static unsigned char module_extend_function_cmd_handler(const unsigned char *cmd
  */
 void data_handle(u16 offset) {
 #ifdef SUPPORT_MCU_FIRM_UPDATE
-    u8 *firmware_addr = NULL;
-    static u16 firm_size;            // 升级包一包的大小
-    static u32 firm_length;          // MCU升级文件长度
     static u8 firm_update_flag = 0;  // MCU升级标志
-    u32 dp_len;
-    u8 firm_flag;  // 升级包大小标志
+    u32 dp_len;// 升级包大小标志
 #else
     u16 dp_len;
 #endif
@@ -519,7 +515,7 @@ void data_handle(u16 offset) {
             break;
 
 #ifdef SUPPORT_MCU_FIRM_UPDATE
-        case UPDATE_START_CMD:  // 升级开始
+        case UPDATE_START_CMD:  // 升级开始 
             // app收到ota升级命令 直接重启 跳转到boot处理
             __disable_irq();          // 关闭中断
             HAL_NVIC_SystemReset();   // 触发复位
