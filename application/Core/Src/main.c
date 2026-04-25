@@ -18,6 +18,8 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "i2c.h"
+#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -26,6 +28,9 @@
 #include "bootloader.h"
 #include "bootloader_uart.h"
 #include "wifi.h"
+#include "HT1602.H"
+#include "TouchIN.h"
+#include "as5600.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -46,7 +51,11 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-uint8_t temp_wifi_uart_rx_buf[256];  /* 串口接收缓冲区 */
+uint8_t temp_wifi_uart_rx_buf[256];  /* 串口接收缓冲�?????? */
+unsigned char dismem[16]={0X0,0X0,0X0,0X0,0X0,0X0,0X0,0X0,0X0,0X0,0X0,0X0,0X0,0X0,0X00,0X00};
+uint16_t angle;
+uint8_t alive;
+AS5600_TypeDef as5600;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -69,9 +78,11 @@ int main(void)
 
   /* USER CODE BEGIN 1 */
 	
-	/* 设置中断向量表偏�? - 必须在最前面�? */
-  SCB->VTOR = APP_START_ADDR;
-	
+	/* 设置中断向量表偏- 必须在最前面 ota需要解注释，调试可以保留 */
+  //SCB->VTOR = APP_START_ADDR;
+	/* 编译成bootloader所支持的bin，需要修改ld中的以下参数*/
+	// flash 0x08004000  0xBC00
+  // RAM   0x20001000  0x4000
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -93,11 +104,13 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART1_UART_Init();
+  MX_TIM4_Init();
+  MX_I2C2_Init();
   /* USER CODE BEGIN 2 */
   /* 初始化Bootloader */
   Bootloader_Init();
   
-  /* 清空UART缓冲区，避免之前的数据干�? */
+  /* 清空UART缓冲区，避免之前的数据干�??????? */
   __HAL_UART_FLUSH_DRREGISTER(&huart1);
   __HAL_UART_CLEAR_FLAG(&huart1, UART_FLAG_RXNE);
   __HAL_UART_CLEAR_FLAG(&huart1, UART_FLAG_TC);
@@ -107,9 +120,9 @@ int main(void)
 	
 	//Bootloader_UART_SendString("  STM32 Application enter successfull!\r\n");
 
-  /* 初始化wifi协议,必须在MCU初始化代码中调用该函数 */
+  /* 初始化wifi协议,必须在MCU初始化代码中调用该函�?????? */
   wifi_protocol_init();  
-  // 产品信息 确保在上一次ota结束重启后，bootloader能回复模块当前的产品信息，防止误判为ota超时
+  // 产品信息 确保在上�??????次ota结束重启后，bootloader能回复模块当前的产品信息，防止误判为ota超时
   Bootloader_UpdateAppVersion();
   extern void product_info_update();
   product_info_update();
@@ -117,9 +130,49 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+	as5600.i2cHandle = &hi2c2;
+	as5600.i2cAddr = AS5600_SLAVE_ADDRESS<<1; // STM32 HAL库使用左移后的地�?
+  AS5600_Init(&as5600);
+  HT1621_Cmd_init();//液晶初始化sun
+  Dis_Clr();        //清屏sun
+  TT_Dis(1);
+  Signle_Dis(1);
+  HT1621_WriteData(0x00,dismem,16);
+  TOP_Light_ON();
+  Light_OFF();
+  extern unsigned char TouchIN;    
   while (1)
   {
     wifi_uart_service();
+    TouchIN_Dect(); // 触摸按键�??�??
+    AS5600_GetAngle(&as5600, &angle);
+//    AS5600_GetMagnetStatus(&as5600, &alive);
+    // 根据按键状态和角度信息更新显示内容
+//     if(TouchIN == 1){
+//        //  Turn_left();
+//        // key =0;
+//         TT_Dis(1);
+//         HT1621_WriteData(0x00,dismem,16);
+//     }
+//     if(TouchIN == 2){
+//        //  Turn_right();
+//        // key =0;
+//         Signle_Dis(1);
+//         HT1621_WriteData(0x00,dismem,16);
+//     }
+//     if(TouchIN == 4){
+//        //  Turn_stop();
+//      //   SEG1_Dis(i%10);
+//         
+//        //  i++;
+//        // key =0;
+//          HT1621_WriteData(0x00,dismem,16);
+//     }
+//     SEG1_Dis(TouchIN);
+//     Point_Dis(25);
+//     HT1621_WriteData(0x00,dismem,16);
+    SEG1_Dis(TouchIN);
+    HT1621_WriteData(0x00,dismem,16);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
