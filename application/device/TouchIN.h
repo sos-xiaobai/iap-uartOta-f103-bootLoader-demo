@@ -19,6 +19,7 @@ void Turn_right();
 void Turn_stop();
 // 获取盖子开合状态
 GPIO_PinState GetCoverStatus();
+
 //extern unsigned int TouchIN;											
 
 

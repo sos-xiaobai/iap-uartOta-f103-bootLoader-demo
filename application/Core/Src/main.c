@@ -54,16 +54,18 @@
 uint8_t temp_wifi_uart_rx_buf[256];  /* 串口接收缓冲�???????? */
 unsigned char dismem[16]={0X0,0X0,0X0,0X0,0X0,0X0,0X0,0X0,0X0,0X0,0X0,0X0,0X0,0X0,0X00,0X00};
 float now_angle;
+unsigned long target_angle;
 uint8_t dis_angle;
 uint8_t alive;
 uint32_t dis_direction = 0;  //ui显示的方向 0/1 持续化存储在flash
 AS5600_TypeDef as5600;
-uint8_t sleep_flag = 0;
-uint8_t switch_flag = 0;
-uint8_t my_reset_wifi_flag = 0;
-uint16_t left_right_count = 0;
-uint16_t middle_count = 0;
-uint16_t left_right_middle_count = 0;
+uint8_t control_origin = 0; //0:控制来自按键 1:控制来自app 默认为0
+uint8_t sleep_flag = 0; //睡眠状态标志，0:正常状态 1:睡眠状态
+uint8_t my_reset_wifi_flag = 0; //wifi重置标志，0:正常状态 1:正在重置wifi，此时不处理按键逻辑和显示内容，等待wifi重置完成后重启设备
+uint16_t left_right_count = 0; //左右按键同时按下计数
+uint16_t middle_count = 0;  //中间按键按下计数
+uint16_t left_right_middle_count = 0; //三个按键全部按下计数
+uint16_t key_no_touch_count = 0; //没有按键按下计数
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -75,6 +77,7 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 uint8_t AngleToDis(float angle);
+uint8_t test = 0;
 /* USER CODE END 0 */
 
 /**
@@ -157,37 +160,69 @@ int main(void)
     // WBR模块通信
     wifi_uart_service();
     // 磁编读取角度
-    AS5600_Get_True_Angle(&as5600, &now_angle);
+    AS5600_Get_True_Angle(&as5600, &now_angle);    
+
     if(sleep_flag){
-      // 只在睡眠状态检查和更新UI显示方向标志-->flash持久化存储 防止写flash导致中断失败
-      uint32_t flash_dis_direction  = 2;
-      if(Bootloader_ReadAppStatus(&flash_dis_direction) == IAP_SUCCESS)
-      {
-          if(flash_dis_direction != dis_direction){
-              Bootloader_SaveAppStatus(dis_direction);
-          }
-      } 
+      Dis_Clr();        //清屏sun
+      HT1621_WriteData(0x00,dismem,16);
+      Light_OFF();
       continue;    // 如果睡眠状态,不处理按键逻辑和显示内容
     }
-    
-    // 根据按键状和角度信息更新显示内容
-    // 只按住左键or右键
-    if(TouchIN == 1 || TouchIN == 2){
-      if(TouchIN == 1){
-        Turn_left(); //左转
-      }else if(TouchIN == 2){
-        Turn_right(); //右转
+		
+    TT_Dis(1);
+    HT1621_WriteData(0x00,dismem,16);
+
+    // 不是只在睡眠状态检查和更新UI显示方向标志-->flash持久化存储 防止写flash导致中断失败
+    uint32_t flash_dis_direction  = 2;
+    if(Bootloader_ReadAppStatus(&flash_dis_direction) == IAP_SUCCESS)
+    {
+        if(flash_dis_direction != dis_direction){
+            Bootloader_SaveAppStatus(dis_direction);
+        }
+    }
+
+    // 根据control_origin判断是手机角度or按键控制
+    if(control_origin == 1){ // 如果控制来自app，则根据目标角度和当前角度的差值来控制转动，避免频繁切换转动状态
+      if(target_angle >= 0 && target_angle <= 180){
+        if(target_angle < now_angle - 0.5){ // 角度差大于0.5度才转动
+          Turn_left();
+        }else if(target_angle > now_angle + 0.5){
+          Turn_right();
+        }else{
+          Turn_stop();
+        }
       }
     }else{
-      Turn_stop();// 不按住左or右键位,关闭转动
+      // 根据按键状和角度信息更新显示内容
+      // 只按住左键or右键
+      if(TouchIN == 1 || TouchIN == 2){
+        if(TouchIN == 1){
+          if(now_angle>=0){
+            Turn_left(); //左转
+          }else{
+            Turn_stop();// 不按住左or右键位,关闭转动
+          }
+        }else if(TouchIN == 2){
+          if(now_angle<=180){
+            Turn_right(); //右转
+          }else{
+            Turn_stop();
+          }
+        }
+      }else{
+        Turn_stop();// 不按住左or右键位,关闭转动
+      }
     }
 
     // 判断显示方向
-    if(dis_direction){     
+    if(dis_direction){    
+        //TT_Dis(dis_direction); 
         dis_angle = AngleToDis(now_angle);
     }else{
+      //TT_Dis(dis_direction);
       dis_angle = 51 - AngleToDis(now_angle);
     }    
+    //HT1621_WriteData(0x00,dismem,16);
 
     // wifi重置
     if(my_reset_wifi_flag){
@@ -200,8 +235,24 @@ int main(void)
 					mcu_reset_wifi();
 				}
     }
+
+    // 更新wifi状态 只要不是低功耗模式就点亮wifi
+    if(wifi_work_state == 4){
+      Signle_Dis(1);
+    }else{
+      Signle_Dis(0);
+    }
+    HT1621_WriteData(0x00,dismem,16);
+
+    // 只要联网就上报角度数据
+    if(wifi_work_state == 4 || wifi_work_state == 3){
+      mcu_dp_value_update(DPID_ANGLE,(unsigned long)(now_angle)); //VALUE型数据上报 数值范围: 0-90, 间距: 1, 倍数: 0, 单位: °;
+      mcu_dp_value_update(DPID_ANGLEDIS,(unsigned long)(now_angle)); //VALUE型数据上报数值范围: 0-90, 间距: 1, 倍数: 0, 单位:;
+    }
+
     // 更新显示
     Point_Dis(dis_angle);
+    HT1621_WriteData(0x00,dismem,16);
     DisplayFloat(now_angle);
     HT1621_WriteData(0x00,dismem,16);
     /* USER CODE END WHILE */
@@ -268,7 +319,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     {
       TouchIN_Dect(); // 触摸按键�?�?
 
-
       // ************判断盖子开合 启动休眠  待测试************//
       // if(GetCoverStatus()){
       //   sleep_flag = 1;
@@ -312,7 +362,17 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         left_right_middle_count = 0;
         sleep_flag = sleep_flag==1?0:1;
       }
-
+      // ************检测按键 控制key的灯光************//
+      if(TouchIN == 0){
+        key_no_touch_count++;
+      }else{
+        control_origin = 0; // 只要有按键操作就认为控制来自按键
+        Light_ON();
+        key_no_touch_count = 0;
+      }
+      if(key_no_touch_count >= 1000){
+        Light_OFF();
+      }
     }
 }
 

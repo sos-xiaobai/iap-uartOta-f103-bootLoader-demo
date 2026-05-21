@@ -104,8 +104,8 @@ void Turn_right(){
 
 // 关闭
 void Turn_stop(){
-    HAL_GPIO_WritePin(INA_GPIO_Port,INA_Pin,GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(INB_GPIO_Port,INB_Pin,GPIO_PIN_RESET);    
+    HAL_GPIO_WritePin(INA_GPIO_Port,INA_Pin,GPIO_PIN_SET);
+    HAL_GPIO_WritePin(INB_GPIO_Port,INB_Pin,GPIO_PIN_SET);    
 }
 
 // 获取盖子开合状态

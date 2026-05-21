@@ -13,7 +13,9 @@ extern unsigned char DI2_QS;
 
 void Delay(unsigned int i)
 {
-    HAL_Delay(i);
+    //HAL_Delay(i);
+    uint16_t count = i*10;
+    while(count--);
 } 
 
 void SendBit(unsigned char dat,unsigned char bitcnt)
@@ -72,7 +74,7 @@ void HT1621_WriteData(unsigned char Waddr,unsigned char *Wdata,unsigned char Wnu
  for(i=0;i<Wnum;i++){
   
      SendBit(Wdata[i],8);
-     Delay(10); 
+     Delay(1);  
  }
  Ht1621_CS_1;
  Delay(1);
@@ -114,12 +116,12 @@ void DisplayFloat(float value)
 {
     uint8_t num;
 
-//    /* 四舍五入并限幅到 0~180 */
-//    if (value < 0.0f) {
-//        value = 0.0f;
-//    } else if (value > 180.0f) {
-//        value = 180.0f;
-//    }
+   /* 四舍五入并限幅到 0~180 */
+   if (value < 0.0f) {
+       value = 0.0f;
+   } else if (value > 180.0f) {
+       value = 180.0f;
+   }
     num = (uint8_t)(value + 0.5f);
 
     /* 提取各位数字 */
@@ -127,14 +129,14 @@ void DisplayFloat(float value)
     uint8_t shi = (num % 100) / 10;   // 十位
     uint8_t ge  = num % 10;           // 个位
 
-    /* 高位不显示：只有数值 ≥100 才调百位接口 */
-    if (num >= 100) {
+    // /* 高位不显示：只有数值 ≥100 才调百位接口 */
+    // if (num >= 100) {
         
-    }
-    /* 数值 ≥10 才调十位接口 */
-    if (num >= 10) {
+    // }
+    // /* 数值 ≥10 才调十位接口 */
+    // if (num >= 10) {
         
-    }
+    // }
     SEG2_Dis(shi);   /* 十位 */
     SEG3_Dis(bai);   /* 百位 */
     /* 个位总是显示（包括 0） */
