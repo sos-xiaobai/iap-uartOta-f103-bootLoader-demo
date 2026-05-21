@@ -21,26 +21,26 @@ void SendBit(unsigned char dat,unsigned char bitcnt)
  unsigned char i;
  for(i=0;i<bitcnt;i++)
  {
-     Ht1621_WR_0; /*ÖÃÊ±ÖÓÏßÎª¸ßÍ¨Öª±»¿ØÆ÷¿ªÊ¼½ÓÊÕÊıÎ»*/
+     Ht1621_WR_0; /*ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½Í¨Öªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»*/
 
   if(( dat & 0x80 ) == 0)
   Ht1621_Data_0;
   else
-  Ht1621_Data_1; /*·¢ËÍÊı¾İÓÉ¸ßÎ»µ½µÍÎ»´«ËÍ*/
+  Ht1621_Data_1; /*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¸ï¿½Î»ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½*/
 
   Delay(1);
-  Ht1621_WR_1; /*Ç¯×¡×ÜÏß×¼±¸ÏÂÒ»¸öÊı¾İÎ»*/
+  Ht1621_WR_1; /*Ç¯×¡ï¿½ï¿½ï¿½ï¿½×¼ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»*/
   Delay(1);
-  dat=dat<<1;   /*·¢ËÍÊı¾İ×óÒÆÒ»Î»*/
+  dat=dat<<1;   /*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»Î»*/
  }
 }
 void HT1621_init(void)
 {
 
- Ht1621_CS_1;   /*CS ¶Ë¿ÚÎª1*/
- Ht1621_WR_1;   /*WR ¶Ë¿ÚÎª1*/
- Ht1621_RD_1;   /*WR ¶Ë¿ÚÎª1*/
- Ht1621_Data_1;   /*DATA¶Ë¿ÚÎª1*/
+ Ht1621_CS_1;   /*CS ï¿½Ë¿ï¿½Îª1*/
+ Ht1621_WR_1;   /*WR ï¿½Ë¿ï¿½Îª1*/
+ Ht1621_RD_1;   /*WR ï¿½Ë¿ï¿½Îª1*/
+ Ht1621_Data_1;   /*DATAï¿½Ë¿ï¿½Îª1*/
 
 }
 
@@ -81,14 +81,14 @@ void HT1621_WriteData(unsigned char Waddr,unsigned char *Wdata,unsigned char Wnu
 
 void HT1621_Cmd_init(void)
 {
-  HT1621_WriteCmd(Cmd8,SYSEN); //´ò¿ªÏµÍ³Õñµ´Æ÷ÃüÁî
-  HT1621_WriteCmd(Cmd8,LCDON); //´ò¿ªLCDÆ«Ñ¹·¢ÉúÆ÷ÃüÁî
- // HT1621_WriteCmd(Cmd8,WDTDIS); //WDT Òç³ö±êÖ¾Êä³öÊ§Ğ§ÃüÁî
-  HT1621_WriteCmd(Cmd8,TIMERDIS ); //Ê±»ùÊä³öÊ¹ÄÜÃüÁî
- // HT1621_WriteCmd(Cmd8,RC256 ); ///ÏµÍ³Ê±ÖÓÔ´Æ¬ÄÚRCÕñµ´Æ÷ÃüÁî
-  HT1621_WriteCmd(Cmd8, BIAS ); //LCD1/3Æ«Ñ¹Ñ¡Ïî4¸ö¹«¹²¿ÚÃüÁî
-  //HT1621_WriteCmd(Cmd9, F1 ); /*Ê±»ù/WDT Ê±ÖÓÊä³ö1Hz WDTÉèÖÃÎª4 ÃëÒç³ö*/
-  //HT1621_WriteCmd(Cmd9, IRQEN ); /*Ê±»ù/WDT Ê±ÖÓÊä³ö1Hz WDTÉèÖÃÎª4 ÃëÒç³ö*/
+  HT1621_WriteCmd(Cmd8,SYSEN); //ï¿½ï¿½ÏµÍ³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+  HT1621_WriteCmd(Cmd8,LCDON); //ï¿½ï¿½LCDÆ«Ñ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ // HT1621_WriteCmd(Cmd8,WDTDIS); //WDT ï¿½ï¿½ï¿½ï¿½ï¿½Ö¾ï¿½ï¿½ï¿½Ê§Ğ§ï¿½ï¿½ï¿½ï¿½
+  HT1621_WriteCmd(Cmd8,TIMERDIS ); //Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ // HT1621_WriteCmd(Cmd8,RC256 ); ///ÏµÍ³Ê±ï¿½ï¿½Ô´Æ¬ï¿½ï¿½RCï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+  HT1621_WriteCmd(Cmd8, BIAS ); //LCD1/3Æ«Ñ¹Ñ¡ï¿½ï¿½4ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+  //HT1621_WriteCmd(Cmd9, F1 ); /*Ê±ï¿½ï¿½/WDT Ê±ï¿½ï¿½ï¿½ï¿½ï¿½1Hz WDTï¿½ï¿½ï¿½ï¿½Îª4 ï¿½ï¿½ï¿½ï¿½ï¿½*/
+  //HT1621_WriteCmd(Cmd9, IRQEN ); /*Ê±ï¿½ï¿½/WDT Ê±ï¿½ï¿½ï¿½ï¿½ï¿½1Hz WDTï¿½ï¿½ï¿½ï¿½Îª4 ï¿½ï¿½ï¿½ï¿½ï¿½*/
 }
 void Signle_Dis(unsigned char x){
 
@@ -105,6 +105,42 @@ void TT_Dis(unsigned char x){
         dismem[0] = dismem[0]|0x10;
     }
 }
+
+/**
+ * @brief  æ˜¾ç¤ºæµ®ç‚¹æ•°ï¼ˆ0.0 ~ 180.0ï¼‰åˆ°ä¸‰ä½æ•°ç ç®¡
+ * @param  value: å¾…æ˜¾ç¤ºçš„æµ®ç‚¹æ•°
+ */
+void DisplayFloat(float value)
+{
+    uint8_t num;
+
+//    /* å››èˆäº”å…¥å¹¶é™å¹…åˆ° 0~180 */
+//    if (value < 0.0f) {
+//        value = 0.0f;
+//    } else if (value > 180.0f) {
+//        value = 180.0f;
+//    }
+    num = (uint8_t)(value + 0.5f);
+
+    /* æå–å„ä½æ•°å­— */
+    uint8_t bai = num / 100;          // ç™¾ä½
+    uint8_t shi = (num % 100) / 10;   // åä½
+    uint8_t ge  = num % 10;           // ä¸ªä½
+
+    /* é«˜ä½ä¸æ˜¾ç¤ºï¼šåªæœ‰æ•°å€¼ â‰¥100 æ‰è°ƒç™¾ä½æ¥å£ */
+    if (num >= 100) {
+        
+    }
+    /* æ•°å€¼ â‰¥10 æ‰è°ƒåä½æ¥å£ */
+    if (num >= 10) {
+        
+    }
+    SEG2_Dis(shi);   /* åä½ */
+    SEG3_Dis(bai);   /* ç™¾ä½ */
+    /* ä¸ªä½æ€»æ˜¯æ˜¾ç¤ºï¼ˆåŒ…æ‹¬ 0ï¼‰ */
+    SEG1_Dis(ge);       /* ä¸ªä½ */
+}
+
 void SEG1_Dis(unsigned char x){
 
     dismem[8] &= ~0x0e;
@@ -416,7 +452,7 @@ void Time_Dis(unsigned char  min,unsigned char  second){
    tmp = j&0x0f ;
    tmp = tmp << 4;
    dismem[2] = dismem[2]&0x0f;
-   dismem[2] = dismem[2]|tmp|0x80; //col³£ÁÁ
+   dismem[2] = dismem[2]|tmp|0x80; //colï¿½ï¿½ï¿½ï¿½
 
    i= second >> 4;  
    j=Tablep[i];
@@ -500,12 +536,12 @@ void T1_Dis(void){
 //extern unsigned char dismem[16];
      dismem[0]=0xff;
 }
-////ÏÔÊ¾·½¿ò³ÌĞò
+////ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void Pane_Dis(unsigned char t){
 
   switch(t){
      case 0:
-          dismem[8]=dismem[8]|0x0E;dismem[9]=dismem[9]|0xFF;break;  //È«ÁÁ
+          dismem[8]=dismem[8]|0x0E;dismem[9]=dismem[9]|0xFF;break;  //È«ï¿½ï¿½
      case 1:
           dismem[8]=dismem[8]&0xF1;dismem[9]=dismem[9]&0x00;
           dismem[9]=dismem[9]|0x08; break;
@@ -540,14 +576,14 @@ void Pane_Dis(unsigned char t){
           dismem[8]=dismem[8]&0xF1;dismem[9]=dismem[9]&0x00;
           dismem[8]=dismem[8]|0x0E;dismem[9]=dismem[9]|0xFF; break;
      default:
-          dismem[8]=dismem[8]&0xF1;dismem[9]=dismem[9]&0x00;  //È«Ãğ 
+          dismem[8]=dismem[8]&0xF1;dismem[9]=dismem[9]&0x00;  //È«ï¿½ï¿½ 
           break;
   }
 }
 
 
 
-// uint8_t To_Bcd(unsigned char t)   //2Î»Êı×Ö×ªBCD
+// uint8_t To_Bcd(unsigned char t)   //2Î»ï¿½ï¿½ï¿½ï¿½×ªBCD
 // { 
 //   unsigned char out;
 //   if(t==0xFF) out=t;

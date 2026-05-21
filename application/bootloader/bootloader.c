@@ -694,6 +694,56 @@ IAP_StatusTypeDef Bootloader_ReadAppVersion(Firmware_VersionTypeDef *version)
 }
 
 /**
+  * @brief  写入一个字（32位）到 APP_STATUS_ADDR 持久化保存
+  * @param  status_word: 要保存的状态字
+  * @retval IAP 状态
+  */
+IAP_StatusTypeDef Bootloader_SaveAppStatus(uint32_t status_word)
+{
+    HAL_StatusTypeDef status;
+    /* 读取flash中的版本信息 */
+    Firmware_VersionTypeDef current_version;
+    status = Bootloader_ReadAppVersion(&current_version);
+    if (status != IAP_SUCCESS)
+    {
+        return status;
+    }
+    /* 设置新的版本信息 */
+    Firmware_VersionTypeDef* new_version;
+    new_version = &current_version;
+    new_version->reserved[0] = status_word;
+    status = Bootloader_SaveAppVersion(new_version);
+    if (status != IAP_SUCCESS)
+    {
+        return status;
+    }
+    return IAP_SUCCESS;
+}
+
+/**
+  * @brief  从 APP_STATUS_ADDR 读取一个字（32位）
+  * @param  status_word: 指向存放读取结果变量的指针
+  * @retval IAP 状态
+  */
+IAP_StatusTypeDef Bootloader_ReadAppStatus(uint32_t *status_word)
+{
+    if (status_word == NULL)
+    {
+        return IAP_INVALID_PARAM;
+    }
+    IAP_StatusTypeDef status;
+    Firmware_VersionTypeDef version;
+    status = Bootloader_ReadAppVersion(&version);  // 复用版本信息读取函数，读取状态字
+    if (status != IAP_SUCCESS)
+    {
+        return status;
+    }
+    *status_word = version.reserved[0];  // 状态字存储在reserved[0]中
+
+    return IAP_SUCCESS;
+}
+
+/**
   * @brief  检查APP固件版本信息是否有效
   * @retval 1: 有效, 0: 无效
   */

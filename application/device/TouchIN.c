@@ -6,12 +6,12 @@
  *  Created on: 2013-2-20 (modified)
  *      Author: Administrator
  *======================================================*/
-
+#include "main.h"
 #include "stm32f1xx_hal.h"
 #define KEY_NUM            3            /*触摸按键数目，根据需要修改*/
 // 按键映射：PB15, PB14, PB13
 GPIO_TypeDef* KEY_GPIO[KEY_NUM] = {GPIOB, GPIOB, GPIOB};
-const uint16_t KEY_PIN[KEY_NUM] = {GPIO_PIN_15, GPIO_PIN_14, GPIO_PIN_13};
+const uint16_t KEY_PIN[KEY_NUM] = {GPIO_PIN_13, GPIO_PIN_15, GPIO_PIN_14};
 //==================静态全局变量============================
 unsigned char Key_Buff[KEY_NUM][4] = {{0}};  // 软件FIFO
 uint8_t Status[3] = {0}; // 用于记录按键状态，0表示未按下，1表示按下
@@ -88,4 +88,27 @@ void TouchIN_Dect()                                            // 触摸输入�
         Key_FIFO_Update(i);
         Key_Judge_Index(i);
     }
+}
+
+// 左转
+void Turn_left(){
+    HAL_GPIO_WritePin(INA_GPIO_Port,INA_Pin,GPIO_PIN_SET);
+    HAL_GPIO_WritePin(INB_GPIO_Port,INB_Pin,GPIO_PIN_RESET);
+}
+
+// 右转
+void Turn_right(){
+    HAL_GPIO_WritePin(INA_GPIO_Port,INA_Pin,GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(INB_GPIO_Port,INB_Pin,GPIO_PIN_SET);
+}
+
+// 关闭
+void Turn_stop(){
+    HAL_GPIO_WritePin(INA_GPIO_Port,INA_Pin,GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(INB_GPIO_Port,INB_Pin,GPIO_PIN_RESET);    
+}
+
+// 获取盖子开合状态
+GPIO_PinState GetCoverStatus(){
+    return (HAL_GPIO_ReadPin(COVER_IO_GPIO_Port,COVER_IO_Pin));
 }

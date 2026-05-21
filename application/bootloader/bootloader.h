@@ -98,7 +98,7 @@ typedef struct
     uint32_t app_size;            /* APP固件实际大小（字节） */
     uint32_t app_crc32;           /* APP固件CRC32校验值 */
     char     description[32];     /* 固件描述信息 */
-    uint32_t reserved[4];         /* 保留字段，用于未来扩展 */
+    uint32_t reserved[4];         /* 保留字段，用于未来扩展 */  //reserved[0]存储app运行状态 
 } Firmware_VersionTypeDef;
 
 /* Exported constants --------------------------------------------------------*/
@@ -138,6 +138,9 @@ typedef struct
 /* 固件版本信息地址（存储在Flash最后一页，UPDATE_FLAG之后） */
 #define FW_VERSION_INFO_ADDR    0x0800FD00    /* 固件版本信息地址 */
 #define FW_VERSION_MAGIC        0x46575652  /* 固件版本魔术字 "FWVR" */
+
+#define APP_STATUS_ADDR 0x0800FC04    //app运行保存的数据 
+
 
 /* Bootloader版本信息 */
 #define BOOTLOADER_VERSION_MAJOR    1
@@ -206,6 +209,8 @@ const char* Bootloader_GetStatusString(IAP_StatusTypeDef status);
 IAP_StatusTypeDef Bootloader_UpdateAppVersion(void);
 IAP_StatusTypeDef Bootloader_SaveAppVersion(Firmware_VersionTypeDef *version);
 IAP_StatusTypeDef Bootloader_ReadAppVersion(Firmware_VersionTypeDef *version);
+IAP_StatusTypeDef Bootloader_SaveAppStatus(uint32_t status_word);
+IAP_StatusTypeDef Bootloader_ReadAppStatus(uint32_t *status_word);
 uint8_t Bootloader_IsAppVersionValid(void);
 int8_t Bootloader_CompareVersion(Firmware_VersionTypeDef *ver1, Firmware_VersionTypeDef *ver2);
 void Bootloader_EraseAppVersion(void);

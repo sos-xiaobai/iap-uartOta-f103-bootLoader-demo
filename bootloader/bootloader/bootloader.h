@@ -139,6 +139,8 @@ typedef struct
 #define FW_VERSION_INFO_ADDR    0x0800FD00    /* 固件版本信息地址 */
 #define FW_VERSION_MAGIC        0x46575652  /* 固件版本魔术字 "FWVR" */
 
+#define APP_STATUS 0x0800FE00   //app运行保存的数据 
+
 /* Bootloader版本信息 */
 #define BOOTLOADER_VERSION_MAJOR    1
 #define BOOTLOADER_VERSION_MINOR    0

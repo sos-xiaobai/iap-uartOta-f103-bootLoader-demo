@@ -97,7 +97,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   /* 初始化Bootloader */
   Bootloader_Init();
-  
+   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, GPIO_PIN_SET); 
   /* 清空UART缓冲区，避免之前的数据干�?? */
   __HAL_UART_FLUSH_DRREGISTER(&huart1);
   __HAL_UART_CLEAR_FLAG(&huart1, UART_FLAG_RXNE);

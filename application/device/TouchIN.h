@@ -8,10 +8,18 @@
 #ifndef TOUCHIN_H_
 #define TOUCHIN_H_
 
-extern void TouchIN_Dect()	;												//WDTÖĞ¶ÏÊÂ¼ş
-extern unsigned char TouchIN;											// Ïàµ±ÓÚPxIN¼Ä´æÆ÷×÷ÓÃ£¬Ö§³Ö8¸ö´¥Ãş°´¼ü
-//extern unsigned int TouchIN;												// ¸ÄÎª´Ë¾ä´úÂë¿ÉÖ§³Ö16¸ö´¥Ãş°´¼ü
+extern void TouchIN_Dect()	;												
+extern unsigned char TouchIN;	
 
+// å·¦è½¬
+void Turn_left();
+// å³è½¬
+void Turn_right();
+// å…³é—­
+void Turn_stop();
+// è·å–ç›–å­å¼€åˆçŠ¶æ€
+GPIO_PinState GetCoverStatus();
+//extern unsigned int TouchIN;											
 
 
 #endif /* TOUCHIN_H_ */

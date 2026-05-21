@@ -45,6 +45,7 @@ void TT_Dis(unsigned char x);
 void SEG1_Dis(unsigned char x);
 void SEG2_Dis(unsigned char x);
 void SEG3_Dis(unsigned char x);
+void DisplayFloat(float value);
 void Dis_Clr(void);
 
 

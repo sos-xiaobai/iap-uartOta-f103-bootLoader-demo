@@ -179,7 +179,8 @@ void all_data_update(void){
     //此代码为平台自动生成，请按照实际数据修改每个可下发可上报函数和只上报函数
     // 目前没有实现逻辑 仅做示例，后续会根据实际情况完善
     mcu_dp_value_update(DPID_ANGLE,30); //VALUE型数据上报 数值范围: 0-90, 间距: 1, 倍数: 0, 单位: °;
-    mcu_dp_value_update(DPID_ANGLEDIS,11); //VALUE型数据上报数值范围: 0-90, 间距: 1, 倍数: 0, 单位:;
+    extern float now_angle;
+    mcu_dp_value_update(DPID_ANGLEDIS,(unsigned long)(now_angle)); //VALUE型数据上报数值范围: 0-90, 间距: 1, 倍数: 0, 单位:;
     
 }
 
@@ -210,9 +211,10 @@ static unsigned char dp_download_angle_handle(const unsigned char value[], unsig
     //VALUE type data processing
     // 暂时没有操作逻辑 后期根据实际情况实现
     */
-    
     //There should be a report after processing the DP
     ret = mcu_dp_value_update(DPID_ANGLE,angle);
+    extern float now_angle;
+    ret = mcu_dp_value_update(DPID_ANGLEDIS,(unsigned long)(now_angle)); //VALUE型数据上报数值范围: 0-90, 间距: 1, 倍数: 0, 单位:;
     if(ret == SUCCESS)
         return SUCCESS;
     else

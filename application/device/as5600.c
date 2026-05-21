@@ -574,6 +574,17 @@ HAL_StatusTypeDef AS5600_GetAngle(AS5600_TypeDef *const a,
     return status;
 }
 
+uint16_t raw_angle = 0;
+HAL_StatusTypeDef AS5600_Get_True_Angle(AS5600_TypeDef *const a,
+                                  float *const angle) {
+    HAL_StatusTypeDef status = HAL_OK;
+    
+    status = AS5600_GetAngle(a, &raw_angle);
+    *angle = (float)raw_angle/4096*360.0f;
+
+    return status;
+}
+
 HAL_StatusTypeDef AS5600_GetMagnetStatus(AS5600_TypeDef *const a,
                                          uint8_t *const stat) {
     HAL_StatusTypeDef status = HAL_OK;

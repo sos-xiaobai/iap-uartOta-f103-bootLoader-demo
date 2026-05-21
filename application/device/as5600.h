@@ -41,11 +41,11 @@ burn commands.
     Driver does not currently support angle measurement using AS5600 in PWM
 output mode.
 ×¢:
-Çý¶¯³ÌÐòÄ¿Ç°²»Ö§³ÖÊ¹ÓÃOTP¶Ô¼Ä´æÆ÷½øÐÐÓÀ¾ÃÐ´Èë
-È¼ÉÕµÄÃüÁî¡£
-Çý¶¯³ÌÐòÄ¿Ç°²»Ö§³ÖÊ¹ÓÃADC½øÐÐ½Ç¶È²âÁ¿¡£
-Çý¶¯Æ÷Ä¿Ç°²»Ö§³ÖÔÚPWMÖÐÊ¹ÓÃAS5600½øÐÐ½Ç¶È²âÁ¿
-Êä³öÄ£Ê½¡£
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿Ç°ï¿½ï¿½Ö§ï¿½ï¿½Ê¹ï¿½ï¿½OTPï¿½Ô¼Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð´ï¿½ï¿½
+È¼ï¿½Õµï¿½ï¿½ï¿½ï¿½î¡£
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿Ç°ï¿½ï¿½Ö§ï¿½ï¿½Ê¹ï¿½ï¿½ADCï¿½ï¿½ï¿½Ð½Ç¶È²ï¿½ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿Ç°ï¿½ï¿½Ö§ï¿½ï¿½ï¿½ï¿½PWMï¿½ï¿½Ê¹ï¿½ï¿½AS5600ï¿½ï¿½ï¿½Ð½Ç¶È²ï¿½ï¿½ï¿½
+ï¿½ï¿½ï¿½Ä£Ê½ï¿½ï¿½
 TO-DO:
 
 
@@ -201,6 +201,8 @@ HAL_StatusTypeDef AS5600_GetRawAngle(AS5600_TypeDef *const a,
                                      uint16_t *const angle);
 HAL_StatusTypeDef AS5600_GetAngle(AS5600_TypeDef *const a,
                                   uint16_t *const angle);
+HAL_StatusTypeDef AS5600_Get_True_Angle(AS5600_TypeDef *const a,
+                                       float *const angle);
 HAL_StatusTypeDef AS5600_GetMagnetStatus(AS5600_TypeDef *const a,
                                          uint8_t *const stat);
 HAL_StatusTypeDef AS5600_GetAGCSetting(AS5600_TypeDef *const a,
