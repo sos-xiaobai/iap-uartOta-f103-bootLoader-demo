@@ -129,16 +129,19 @@ void DisplayFloat(float value)
     uint8_t shi = (num % 100) / 10;   // 十位
     uint8_t ge  = num % 10;           // 个位
 
-    // /* 高位不显示：只有数值 ≥100 才调百位接口 */
-    // if (num >= 100) {
-        
-    // }
-    // /* 数值 ≥10 才调十位接口 */
-    // if (num >= 10) {
-        
-    // }
-    SEG2_Dis(shi);   /* 十位 */
-    SEG3_Dis(bai);   /* 百位 */
+    /* 高位不显示：只有数值 ≥100 才调百位接口 */
+    if (num >= 100) {
+        SEG3_Dis(bai);   /* 百位 */
+    }else{
+        SEG3_Dis(3); /* 3代表不显示 */
+    }
+    /* 数值 ≥10 才调十位接口 */
+    if (num >= 10) {
+        SEG2_Dis(shi);   /* 十位 */
+    }else{
+        SEG2_Dis(10); /* 10代表不显示 */
+    }
+		
     /* 个位总是显示（包括 0） */
     SEG1_Dis(ge);       /* 个位 */
 }

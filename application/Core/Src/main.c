@@ -66,6 +66,8 @@ uint16_t left_right_count = 0; //左右按键同时按下计数
 uint16_t middle_count = 0;  //中间按键按下计数
 uint16_t left_right_middle_count = 0; //三个按键全部按下计数
 uint16_t key_no_touch_count = 0; //没有按键按下计数
+
+uint8_t test_direc = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -90,7 +92,7 @@ int main(void)
   /* USER CODE BEGIN 1 */
 	
 	/* 设置中断向量表偏- 必须在最前面 ota�??要解注释，调试可以保�?? */
-  //SCB->VTOR = APP_START_ADDR;
+  SCB->VTOR = APP_START_ADDR;
 	/* 编译成bootloader�??支持的bin，需要修改ld中的以下参数*/
 	// flash 0x08004000  0xBC00
   // RAM   0x20001000  0x4000
@@ -155,6 +157,7 @@ int main(void)
   //读取显示方向状态，确保在每次上电，app能正确读取显示方向状态
   Bootloader_ReadAppStatus(&dis_direction); 	
   HAL_TIM_Base_Start_IT(&htim4); 
+  HAL_Delay(100); // 等待系统稳定 
   while (1)
   {
     // WBR模块通信
@@ -186,10 +189,13 @@ int main(void)
       if(target_angle >= 0 && target_angle <= 180){
         if(target_angle < now_angle - 0.5){ // 角度差大于0.5度才转动
           Turn_left();
+          test_direc = 1;
         }else if(target_angle > now_angle + 0.5){
           Turn_right();
+          test_direc = 2;
         }else{
           Turn_stop();
+          test_direc = 0;
         }
       }
     }else{
@@ -248,6 +254,7 @@ int main(void)
     if(wifi_work_state == 4 || wifi_work_state == 3){
       mcu_dp_value_update(DPID_ANGLE,(unsigned long)(now_angle)); //VALUE型数据上报 数值范围: 0-90, 间距: 1, 倍数: 0, 单位: °;
       mcu_dp_value_update(DPID_ANGLEDIS,(unsigned long)(now_angle)); //VALUE型数据上报数值范围: 0-90, 间距: 1, 倍数: 0, 单位:;
+      mcu_dp_value_update(DPID_WIFI_VALUE,(unsigned long)(wifi_rssi)); //VALUE型数据上报 数值范围:-500-500, 间距: 1, 倍数: 0, 单位: dBm;
     }
 
     // 更新显示

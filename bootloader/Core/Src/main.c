@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -46,11 +47,14 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-uint8_t temp_wifi_uart_rx_buf[256];  /* 串口接收缓冲�? */
+uint8_t temp_wifi_uart_rx_buf[256];  /* 串口接收缓冲�?? */
 uint8_t enter_iap = 0;  /* 进入IAP模式标志 */
 uint16_t get_wifi_count = 0;
 uint16_t get_wifi_count_2 = 0;
-uint16_t get_wifi_count_pre = 5000;  
+uint16_t get_wifi_count_pre = 100;  
+uint8_t AppValid_Flag = 1;  //app段是否有数据 1�?0没有
+uint32_t reset_key_count = 0;
+uint8_t reset_flag = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -94,11 +98,12 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART1_UART_Init();
+  MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
   /* 初始化Bootloader */
   Bootloader_Init();
    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, GPIO_PIN_SET); 
-  /* 清空UART缓冲区，避免之前的数据干�?? */
+  /* 清空UART缓冲区，避免之前的数据干�??? */
   __HAL_UART_FLUSH_DRREGISTER(&huart1);
   __HAL_UART_CLEAR_FLAG(&huart1, UART_FLAG_RXNE);
   __HAL_UART_CLEAR_FLAG(&huart1, UART_FLAG_TC);
@@ -106,10 +111,10 @@ int main(void)
   /* 初始化串口IAP协议 */
   Bootloader_UART_Init(&huart1);
   
-  /* 初始化wifi协议,必须在MCU初始化代码中调用该函�? */
+  /* 初始化wifi协议,必须在MCU初始化代码中调用该函�?? */
   wifi_protocol_init(); 
-
-  /* 发�?�启动信�?? */
+	HAL_TIM_Base_Start_IT(&htim4);
+  /* 发�?�启动信�??? */
   // Bootloader_UART_SendString("\r\n");
   // Bootloader_UART_SendString("====================================\r\n");
   // Bootloader_UART_SendString("  STM32 IAP Bootloader v1.0.0\r\n");
@@ -118,7 +123,7 @@ int main(void)
   
   /* ========== 判断是否进入IAP升级模式 ========== */
   //uint8_t enter_iap = 0;  /* 进入IAP模式标志 */
-  /* 方式1: �??查是否有未完成的升级标志 */
+  /* 方式1: �???查是否有未完成的升级标志 */
   if (Bootloader_CheckUpdateFlag())
   {
       //Bootloader_UART_SendString("WARNING: Last update incomplete!\r\n");
@@ -126,16 +131,17 @@ int main(void)
       enter_iap = 1;
   }
   
-  /* 方式2: �??查APP是否有效 */
+  /* 方式2: �???查APP是否有效 */
   if (!enter_iap && !Bootloader_CheckAppValid())
   {
       //Bootloader_UART_SendString("Application invalid!\r\n");
+			AppValid_Flag = 0;
       enter_iap = 1;
   }
   
-  /* 方式3: GPIO按键触发（可选，�??要配置对应的GPIO�??*/
-  /* 取消下面的注释来启用按键触发功能�??
-   * 1. 在CubeMX中配置一个GPIO输入引脚（如PA0），设置为上拉输�??
+  /* 方式3: GPIO按键触发（可选，�???要配置对应的GPIO�???*/
+  /* 取消下面的注释来启用按键触发功能�???
+   * 1. 在CubeMX中配置一个GPIO输入引脚（如PA0），设置为上拉输�???
    * 2. 修改下面的GPIO_Port和GPIO_Pin为实际配置的引脚
    * 3. 按住按键上电即可进入IAP模式
    */
@@ -147,7 +153,7 @@ int main(void)
   }
   */
   
-  /* 方式4: 超时等待 - 等待firmware命令 */
+  /* 方式4: */
   if (!enter_iap)
   {
       // Bootloader_UART_SendString("\r\n");
@@ -155,23 +161,23 @@ int main(void)
       // Bootloader_UART_SendString("Waiting ");
       
       
-      /* 等待10秒，等待是否收到升级命令 */
-      uint32_t wait_time = 10000;  /* 等待时间（毫秒）*/
+      /* 等待2秒，等待是否收到升级命令 */
+      uint32_t wait_time = 2000;  /* 等待时间（毫秒）*/
       uint32_t start_tick = HAL_GetTick();
       
       while ((HAL_GetTick() - start_tick) < wait_time)
       {
-          /*阻塞等待�?启固件升级命�?*/
+          /*阻塞等待�??启固件升级命�??*/
           wifi_uart_service();
           if(enter_iap) break;
 
-          /* 每秒打印�?个点，指示等待状�? */
-          static uint32_t last_dot = 0;
-          if (HAL_GetTick() - last_dot > 1000)
-          {
-              //Bootloader_UART_SendString(".");
-              last_dot = HAL_GetTick();
-          }
+          /* 每秒打印�??个点，指示等待状�?? */
+//          static uint32_t last_dot = 0;
+//          if (HAL_GetTick() - last_dot > 1000)
+//          {
+//              //Bootloader_UART_SendString(".");
+//              last_dot = HAL_GetTick();
+//          }
           ///HAL_Delay(10);
       }
       //Bootloader_UART_SendString("\r\n");
@@ -190,40 +196,40 @@ int main(void)
   }
   else
   {
-      /* 跳转到应用程�?? */
+      /* 跳转到应用程�??? */
       if (Bootloader_CheckAppValid())
       {
-          /* 显示版本信息（如果有�??*/
-          if (Bootloader_IsAppVersionValid())
-          {
-              Firmware_VersionTypeDef app_version;
-              if (Bootloader_ReadAppVersion(&app_version) == IAP_SUCCESS)
-              {
-                  char version_str[64];
-                  snprintf(version_str, sizeof(version_str), 
-                          "APP Version: %d.%d.%d\r\n", 
-                          app_version.major, app_version.minor, app_version.patch);
-                  //Bootloader_UART_SendString(version_str);
-                  
-                  if (app_version.description[0] != '\0')
-                  {
-                      //Bootloader_UART_SendString("Description: ");
-                      //Bootloader_UART_SendString(app_version.description);
-                      //Bootloader_UART_SendString("\r\n");
-                  }
-              }
-          }
+          /* 显示版本信息（如果有�???*/
+//          if (Bootloader_IsAppVersionValid())
+//          {
+//              Firmware_VersionTypeDef app_version;
+//              if (Bootloader_ReadAppVersion(&app_version) == IAP_SUCCESS)
+//              {
+//                  char version_str[64];
+//                  snprintf(version_str, sizeof(version_str), 
+//                          "APP Version: %d.%d.%d\r\n", 
+//                          app_version.major, app_version.minor, app_version.patch);
+//                  //Bootloader_UART_SendString(version_str);
+//                  
+//                  if (app_version.description[0] != '\0')
+//                  {
+//                      //Bootloader_UART_SendString("Description: ");
+//                      //Bootloader_UART_SendString(app_version.description);
+//                      //Bootloader_UART_SendString("\r\n");
+//                  }
+//              }
+//          }
           
           //Bootloader_UART_SendString("Jumping to application...\r\n");
-          HAL_Delay(100);
+          //HAL_Delay(100);
           Bootloader_JumpToApp();
           
-          /* 如果跳转失败，会继续执行到这�?? */
+          /* 如果跳转失败，会继续执行到这�??? */
           //Bootloader_UART_SendString("ERROR: Jump to application failed!\r\n");
       }
       else
       {
-          /* 理论上不会到这里，因为前面已经检查过�?? */
+          /* 理论上不会到这里，因为前面已经检查过�??? */
           //Bootloader_UART_SendString("ERROR: Application invalid!\r\n");
       }
       
@@ -243,28 +249,38 @@ int main(void)
     /* 该函数会阻塞等待串口数据，超时后返回 */
     /* 支持的命令：
      * - IAP_CMD_GET_INFO      (0xA4): 获取Bootloader信息
-     * - IAP_CMD_START_UPDATE  (0xA5): �??始升�??
+     * - IAP_CMD_START_UPDATE  (0xA5): �???始升�???
      * - IAP_CMD_WRITE         (0xA1): 写入固件数据
      * - IAP_CMD_END_UPDATE    (0xA6): 结束升级
      * - IAP_CMD_VERIFY        (0xA7): 校验固件
-     * - IAP_CMD_JUMP          (0xA3): 跳转到应用程�??
+     * - IAP_CMD_JUMP          (0xA3): 跳转到应用程�???
      */
-
+	//(mcu_get_wifi_work_state()==WIFI_LOW_POWER)
     wifi_uart_service();    
-    get_wifi_count++;
-   if((get_wifi_count%get_wifi_count_pre==0)&&(mcu_get_wifi_work_state()==WIFI_LOW_POWER)){
-		 get_wifi_count_2++;
-		 if(get_wifi_count_2%get_wifi_count_pre==0){
-			       get_wifi_count = 0;
-			 get_wifi_count_2 = 0;
-       mcu_set_wifi_mode(SMART_CONFIG);
-		 }
 
-   }
+    // wifi重置
+    if(reset_flag){
+			if(reset_wifi_flag)
+			{
+					reset_flag = 0;
+			}else{
+				// 重置wifi
+				mcu_reset_wifi();
+			}
+    }
+//   if((get_wifi_count%get_wifi_count_pre==0)&&(mcu_get_wifi_work_state()!=WIFI_CONN_CLOUD)&& AppValid_Flag == 0){
+//		 get_wifi_count_2++;
+//		 if(get_wifi_count_2 > 100){
+//			 get_wifi_count = 0;
+//			 get_wifi_count_2 = 0;
+//			 mcu_reset_wifi();
+//       //mcu_set_wifi_mode(SMART_CONFIG);
+//		 }
+//   }
     //Bootloader_UART_Process();
     
     /* LED闪烁指示Bootloader运行状�?�（可�?�） */
-    /* 取消注释下面的代码来启用LED指示�??
+    /* 取消注释下面的代码来启用LED指示�???
     static uint32_t led_tick = 0;
     if (HAL_GetTick() - led_tick > 500)
     {
@@ -325,6 +341,23 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
     HAL_UART_Receive_IT(&huart1,temp_wifi_uart_rx_buf,1);
   }
 }
+
+// 200hz
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+    if (htim == (&htim4))
+    {
+			// 重置按键检测
+			if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_14) == GPIO_PIN_SET && reset_flag == 0){
+				reset_key_count++;
+			}if(reset_key_count>1000){
+				reset_key_count = 0;
+				reset_flag = 1;
+			}			
+		}
+}
+
+
 /* USER CODE END 4 */
 
 /**

@@ -81,8 +81,8 @@
           </BeforeMake>
           <AfterMake>
             <RunUserProg1>1</RunUserProg1>
-            <RunUserProg2>1</RunUserProg2>
-            <UserProg1Name>fromelf.exe --bin -o application.bin application\application.axf</UserProg1Name>
+            <RunUserProg2>0</RunUserProg2>
+            <UserProg1Name>fromelf.exe --bin --output application\application.bin application\application.axf</UserProg1Name>
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
@@ -273,7 +273,7 @@
               </OCR_RVCT3>
               <OCR_RVCT4>
                 <Type>1</Type>
-                <StartAddress>0x8000000</StartAddress>
+                <StartAddress>0x8004000</StartAddress>
                 <Size>0xbc00</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
@@ -298,7 +298,7 @@
               </OCR_RVCT8>
               <OCR_RVCT9>
                 <Type>0</Type>
-                <StartAddress>0x20000000</StartAddress>
+                <StartAddress>0x20001000</StartAddress>
                 <Size>0x4000</Size>
               </OCR_RVCT9>
               <OCR_RVCT10>

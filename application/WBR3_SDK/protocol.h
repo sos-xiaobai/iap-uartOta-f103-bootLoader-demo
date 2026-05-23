@@ -38,7 +38,7 @@
 #define PRODUCT_KEY "fnloi1nio96zmmeb"    //开发平台创建产品后生成的16位字符产品唯一标识
 
 #endif
-#define MCU_VER "1.0.2"         //用户的软件版本,用于MCU固件升级,MCU升级版本需修改
+#define MCU_VER "1.0.3"         //用户的软件版本,用于MCU固件升级,MCU升级版本需修改
 
 /*  模块工作方式选择,只能三选一,推荐使用防误触模式  */
 //#define CONFIG_MODE     CONFIG_MODE_DEFAULT             //默认工作模式
@@ -344,6 +344,9 @@ BLE_test_result内部有#err提示,完成函数后请删除该#err
 //realtime open value(只上报)
 //备注:
 #define DPID_ANGLEDIS 102
+//wifi信号强度(只上报)
+//备注:
+#define DPID_WIFI_VALUE 103
 
 #endif
 
