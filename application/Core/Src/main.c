@@ -54,6 +54,7 @@
 uint8_t temp_wifi_uart_rx_buf[256];  /* 串口接收缓冲�???????? */
 unsigned char dismem[16]={0X0,0X0,0X0,0X0,0X0,0X0,0X0,0X0,0X0,0X0,0X0,0X0,0X0,0X0,0X00,0X00};
 float now_angle;
+float last_angle;
 unsigned long target_angle;
 uint8_t dis_angle;
 uint8_t alive;
@@ -66,7 +67,15 @@ uint16_t left_right_count = 0; //左右按键同时按下计数
 uint16_t middle_count = 0;  //中间按键按下计数
 uint16_t left_right_middle_count = 0; //三个按键全部按下计数
 uint16_t key_no_touch_count = 0; //没有按键按下计数
-
+uint8_t dp_angle_update_flag = 0; //dp上报角度标志，0:不需要上报 1:需要上报
+uint8_t dp_wifi_update_flag = 0; //dp上报wifi信号强
+uint16_t dp_wifi_update_count = 0; //dp上报wifi信号强计数，达到一定次数后触发上报一次
+//realtime open value(只上报)
+//备注:
+#define DPID_ANGLEDIS 102
+//wifi信号强度(只上报)
+//备注:
+#define DPID_WIFI_VALUE 103
 uint8_t test_direc = 0;
 /* USER CODE END PV */
 
@@ -252,9 +261,15 @@ int main(void)
 
     // 只要联网就上报角度数据
     if(wifi_work_state == 4 || wifi_work_state == 3){
-      mcu_dp_value_update(DPID_ANGLE,(unsigned long)(now_angle)); //VALUE型数据上报 数值范围: 0-90, 间距: 1, 倍数: 0, 单位: °;
-      mcu_dp_value_update(DPID_ANGLEDIS,(unsigned long)(now_angle)); //VALUE型数据上报数值范围: 0-90, 间距: 1, 倍数: 0, 单位:;
-      mcu_dp_value_update(DPID_WIFI_VALUE,(unsigned long)(wifi_rssi)); //VALUE型数据上报 数值范围:-500-500, 间距: 1, 倍数: 0, 单位: dBm;
+      if(dp_angle_update_flag){
+        mcu_dp_value_update(DPID_ANGLE,(unsigned long)(now_angle)); //VALUE型数据上报 数值范围: 0-180, 间距: 1, 倍数: 0, 单位: °;
+        mcu_dp_value_update(DPID_ANGLEDIS,(unsigned long)(now_angle)); //VALUE型数据上报数值范围: 0-180, 间距: 1, 倍数: 0, 单位:°;
+        dp_angle_update_flag = 0;
+      }
+      if(dp_wifi_update_flag){
+        dp_wifi_update_flag = 0;
+        mcu_dp_value_update(DPID_WIFI_VALUE,(unsigned long)(wifi_rssi)); //VALUE型数据上报 数值范围:-500-500, 间距: 1, 倍数: 0, 单位: dBm;
+      }
     }
 
     // 更新显示
@@ -377,9 +392,23 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         Light_ON();
         key_no_touch_count = 0;
       }
-      if(key_no_touch_count >= 1000){
+      if(key_no_touch_count >= 7000){
         Light_OFF();
       }
+     // ************wifi 强度/阀门角度 检测更新************//
+      dp_wifi_update_count++;
+      if(dp_wifi_update_count >= 15){ // 每1s更新一次wifi信号强度和角度数据，避免频繁上报
+        dp_wifi_update_count = 0;
+          mcu_get_wifi_rssi(); // 获取wifi信号强度，结果会通过uart接收中断回调函数返回，处理完后会置位dp_wifi_update_flag标志位
+        //mcu_start_wifitest();
+        dp_angle_update_flag = 1;
+      }
+      if(dp_angle_update_flag == 0){ // 角度变化时也更新角度，避免频繁上报
+        if(now_angle != last_angle){ 
+          dp_angle_update_flag = 1;
+        }
+      }
+      last_angle = now_angle;
     }
 }
 

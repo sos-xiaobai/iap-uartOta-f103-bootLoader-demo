@@ -61,6 +61,7 @@
 #define         WEATHER_DATA_CMD                0x21                            //天气数据
 #define         STATE_UPLOAD_SYN_CMD            0x22                            //状态上报（同步）
 #define         STATE_UPLOAD_SYN_RECV_CMD       0x23                            //状态上报结果通知（同步）
+#define         GET_WIFI_RSSI_CMD               0x24                            //wifi信号强度
 #define         HEAT_BEAT_STOP                  0x25                            //关闭WIFI模组心跳
 #define         STREAM_TRANS_CMD                0x28                            //流数据传输
 #define         GET_WIFI_STATUS_CMD             0x2b                            //获取当前wifi联网状态
@@ -172,6 +173,7 @@ SYSTEM_EXTERN volatile u8 stop_update_flag;                                     
 SYSTEM_EXTERN volatile u8 reset_wifi_flag;                                                  //重置wifi标志(TRUE:成功/FALSE:失败)
 SYSTEM_EXTERN volatile u8 set_wifimode_flag;                                                //设置WIFI工作模式标志(TRUE:成功/FALSE:失败)
 SYSTEM_EXTERN volatile u8 wifi_work_state;                                                  //wifi模块当前工作状态
+SYSTEM_EXTERN volatile u8 wifi_rssi;                                                       //wifi信号强度
 #endif
 
 #ifdef WIFI_STREAM_ENABLE

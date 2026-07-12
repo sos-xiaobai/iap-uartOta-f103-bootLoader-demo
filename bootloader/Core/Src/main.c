@@ -162,7 +162,7 @@ int main(void)
       
       
       /* 等待2秒，等待是否收到升级命令 */
-      uint32_t wait_time = 2000;  /* 等待时间（毫秒）*/
+      uint32_t wait_time = 10000;  /* 等待时间（毫秒）*/
       uint32_t start_tick = HAL_GetTick();
       
       while ((HAL_GetTick() - start_tick) < wait_time)

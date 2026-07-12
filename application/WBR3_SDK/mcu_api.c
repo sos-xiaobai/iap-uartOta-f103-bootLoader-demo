@@ -1040,6 +1040,16 @@ void mcu_get_system_time(void) {
 }
 #endif
 
+/**
+ * @brief  MCU获取wifi信号强度
+ * @param  Null
+ * @return Null
+ * @note   MCU需要自行调用该功能
+ */
+void mcu_get_wifi_rssi(void) {
+    wifi_uart_write_frame(GET_WIFI_RSSI_CMD, MCU_TX_VER, 0);
+}
+
 #ifdef WIFI_TEST_ENABLE
 /**
  * @brief  mcu发起wifi功能测试

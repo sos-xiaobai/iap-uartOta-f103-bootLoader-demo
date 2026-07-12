@@ -395,6 +395,14 @@ void mcu_get_green_time(void);
 void mcu_get_system_time(void);
 #endif
 
+/**
+ * @brief   MCU获取wifi信号强度
+ * @param  Null
+ * @return Null
+ * @note   MCU需要自行调用该功能，获取到的wifi信号强度
+ */
+void mcu_get_wifi_rssi(void);
+
 #ifdef WIFI_TEST_ENABLE
 /**
  * @brief  mcu发起wifi功能测试

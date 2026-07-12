@@ -489,6 +489,11 @@ void data_handle(u16 offset) {
         case WIFI_MODE_CMD:  // 选择smartconfig/AP模式(wifi返回成功)
             set_wifimode_flag = SET_WIFICONFIG_SUCCESS;
             break;
+        case GET_WIFI_RSSI_CMD:  // 获取wifi信号强度
+            wifi_rssi = wifi_data_process_buf[offset + DATA_START];
+            extern uint8_t dp_wifi_update_flag;
+            dp_wifi_update_flag = 1; // 获取到wifi信号强度后,置位dp_wifi_update_flag标志位，触发在主循环中上报wifi信号强度数据
+            break;
 #endif
 
         case DATA_QUERT_CMD:  // 命令下发
@@ -517,6 +522,7 @@ void data_handle(u16 offset) {
 #ifdef SUPPORT_MCU_FIRM_UPDATE
         case UPDATE_START_CMD:  // 升级开始 
             // app收到ota升级命令 直接重启 跳转到boot处理
+			Bootloader_SetUpdateFlag();
             __disable_irq();          // 关闭中断
             HAL_NVIC_SystemReset();   // 触发复位
 
